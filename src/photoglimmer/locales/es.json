@@ -42,7 +42,14 @@
     "open_containing_folder": "Abrir carpeta contenedora",
     "save_transparent_png": "Guardar imagen PNG transparente solo con primer plano",
     "confirm": "Confirmar",
-    "really": "¿Realmente?"
+    "really": "¿Realmente?",
+    "save_image": "Guardar imagen",
+    "image_files": "Archivos de imagen",
+    "error": "Error",
+    "invalid_file": "Archivo inválido",
+    "not_an_image": "¿No es una imagen?",
+    "quit": "¿Salir?",
+    "confirm_quit": "¿Estás seguro de que quieres salir?"
   },
   "messages": {
     "message_about": "Mensaje sobre",

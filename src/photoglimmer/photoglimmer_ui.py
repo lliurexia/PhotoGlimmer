@@ -439,20 +439,24 @@ class  Ui(QtWidgets.QMainWindow):
         if preferSystemFileDlg :
             fname = QtWidgets.QFileDialog.getOpenFileName(
             self,
-            caption=f"{appname}: open image file",
+            caption=f"{appname}: {i18n.get('dialogs.open_image', 'Open image file')}",
             dir= homedir,
-            filter=("Image Files (*.png *.jpg *.bmp *.webp *.JPG *.jpeg *.JPEG )"))
+            filter=(i18n.get('dialogs.image_files', 'Image Files') + " (*.png *.jpg *.bmp *.webp *.JPG *.jpeg *.JPEG )"))
         else:
             fname = customfiledialog.QFileDialogPreview.getOpenFileName(parent=self,dir= homedir )
         if (fname[0] == ''):
             return
         if not self.isImageURL(  fname[0] ):
-            self.showMessage(title="Error!", text="Invalid file",message=f"Not an image?: {fname[0]}  ")
+            self.showMessage(title=i18n.get('dialogs.error', 'Error!'), 
+                          text=i18n.get('dialogs.invalid_file', 'Invalid file'),
+                          message=f"{i18n.get('dialogs.not_an_image', 'Not an image?')}: {fname[0]}  ")
             return
         try:
             self.openNewImage(fname[0])
         except Exception as e:
-            self.showMessage("Error", "Not an image?", type(e).__name__)
+            self.showMessage(i18n.get('dialogs.error', 'Error'), 
+                          i18n.get('dialogs.not_an_image', 'Not an image?'), 
+                          type(e).__name__)
 
 
     def  openNewImage(self, imgpath):
@@ -510,9 +514,9 @@ class  Ui(QtWidgets.QMainWindow):
         newfile= self.appendToFilePath( photoglimmer_backend.originalImgPath)
         fileName, _ = QtWidgets.QFileDialog.getSaveFileName(
             self,
-            caption=f"{appname}: Save File",
+            caption=f"{appname}: {i18n.get('dialogs.save_image', 'Save File')}",
             dir=newfile,  
-            filter=("Image Files (*.jpg, *.png)")) 
+            filter=(i18n.get('dialogs.image_files', 'Image Files') + " (*.jpg, *.png)"))
         if fileName:
             _, ext = os.path.splitext(self.tempimage)
             print( f"going to save {self.tempimage} , extension {ext}")
@@ -544,8 +548,8 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  closeEvent(self, event):
-        res= self.showConfirmationBox(titl="Quit?",
-                                      questn="Are you sure you want to quit?")
+        res= self.showConfirmationBox(titl=i18n.get('dialogs.quit', 'Quit?'),
+                                      questn=i18n.get('dialogs.confirm_quit', 'Are you sure you want to quit?'))
         if not res:
             event.ignore()
         else:
