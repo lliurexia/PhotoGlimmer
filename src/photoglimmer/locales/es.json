@@ -53,7 +53,19 @@
   },
   "messages": {
     "message_about": "Mensaje sobre",
-    "some_message_shown": "Algún mensaje mostrado"
+    "some_message_shown": "Algún mensaje mostrado",
+    "no_mask": "Sin máscara",
+    "edit_first": "Edita algo primero",
+    "edit_and_try": "Edita la imagen un poco e inténtalo de nuevo",
+    "nothing_edited": "¡Nada editado todavía!",
+    "unedited": "Sin editar",
+    "nothing_to_save": "¡Nada que guardar!",
+    "error_saving": "Error al guardar el archivo",
+    "file_saved": "Archivo guardado",
+    "saved_file": "Guardado {}",
+    "fg_copied": "Primer plano copiado al portapapeles",
+    "paste_to_editor": "Pégalo en tu editor de imágenes favorito",
+    "no_image_opened": "¡No has abierto ninguna imagen!"
   },
   "labels": {
     "threshold": "Umbral",

@@ -482,14 +482,13 @@ class  Ui(QtWidgets.QMainWindow):
     def  goReset(self):
         photoglimmer_backend.resetBackend()
         self.openNewImage(photoglimmer_backend.originalImgPath)
-        self.restoreUIValuesToLayer( photoglimmer_backend.currImg)
 
 
     def  goSave(self):
         if (not self.is_state_dirty):
-            self.showMessage(message="Nothing Edited Yet!",
-                             text="Unedited",
-                             title="Nothing To Save!")
+            self.showMessage(message=i18n.get('messages.nothing_edited', 'Nothing Edited Yet!'),
+                              text=i18n.get('messages.unedited', 'Unedited'),
+                              title=i18n.get('messages.nothing_to_save', 'Nothing To Save!'))
             return
         self.disableSliders()
         self.setStatus(i18n.get('status.processing'))
@@ -530,16 +529,16 @@ class  Ui(QtWidgets.QMainWindow):
                     shutil.copy(self.tempimage, fname)
                 except Exception as e:
                     print(f"An error occurred: {e}")
-                    self.showMessage(  title= "Error!",
-                                     text="Error saving file",
-                                     message=e)
+                    self.showMessage(  title=i18n.get('dialogs.error', 'Error!'),
+                                      text=i18n.get('messages.error_saving', 'Error saving file'),
+                                      message=e)
         else:
             pass   
         self.stopBusySpinner()
         if(fname is not None):
             photoglimmer_backend.transferAlteredExif( photoglimmer_backend.originalImgPath,
                                                             fname )
-            self.showMessage( text="File Saved",  message=f"Saved {fname}" )
+            self.showMessage( text=i18n.get('messages.file_saved', 'File Saved'),  message=i18n.get('messages.saved_file', 'Saved {}').format(fname) )
         self.enableSliders()
         photoglimmer_backend.RestoreScaledImages() 
         self.tempimage=photoglimmer_backend.resultImgPath 
@@ -698,8 +697,8 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  _displayTransparencyCompleted(self, progress_callback=None):
-        self.showMessage( "Foreground Copied To Clipboard", 
-                            "Paste it to your favourite image Editor")
+        self.showMessage( i18n.get('messages.fg_copied', 'Foreground Copied To Clipboard'), 
+                            i18n.get('messages.paste_to_editor', 'Paste it to your favourite image Editor'))
         self.setStatus(self.old_status)
         self.old_status=""
 
@@ -708,7 +707,9 @@ class  Ui(QtWidgets.QMainWindow):
         self.disableSliders()
         if (photoglimmer_backend.scaledImgpath == None
                 or not os.path.exists(photoglimmer_backend.scaledImgpath)):
-            self.showMessage("Error!","Empty", "You haven't Opened any Image! ")
+            self.showMessage(i18n.get('dialogs.error', 'Error!'),
+                          i18n.get('messages.unedited', 'Empty'), 
+                          i18n.get('messages.no_image_opened', 'You haven\'t Opened any Image!'))
             return
         worker2 = Worker(self._processImage_bgstuff)
         worker2.signals.finished.connect(self._endImageProcessing)

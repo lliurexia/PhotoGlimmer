@@ -53,7 +53,19 @@
   },
   "messages": {
     "message_about": "Missatge sobre",
-    "some_message_shown": "Algun missatge mostrat"
+    "some_message_shown": "Algun missatge mostrat",
+    "no_mask": "Sense màscara",
+    "edit_first": "Edita alguna cosa primer",
+    "edit_and_try": "Edita la imatge una mica i torna-ho a provar",
+    "nothing_edited": "Res editat encara!",
+    "unedited": "Sense editar",
+    "nothing_to_save": "Res per guardar!",
+    "error_saving": "Error en guardar l'arxiu",
+    "file_saved": "Arxiu guardat",
+    "saved_file": "Guardat {}",
+    "fg_copied": "Primer pla copiat al portapapers",
+    "paste_to_editor": "Enganxa-ho al teu editor d'imatges preferit",
+    "no_image_opened": "No has obert cap imatge!"
   },
   "labels": {
     "threshold": "Llindar",
