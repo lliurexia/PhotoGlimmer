@@ -51,23 +51,24 @@ def update_texts(self):
         current_lang = i18n.get_current_language()
         
         # Update window title
-        title_text = f"{appname}: {i18n.get('app.title')}"
+        # Importar appname de manera relativa para evitar errores
+        from . import photoglimmer_ui
+        title_text = f"{photoglimmer_ui.appname}: {i18n.get('app.title')}"
         self.setWindowTitle(title_text)
         
         # Update button texts
-        save_text = i18n.get('buttons.save')
-        reset_text = i18n.get('buttons.reset')
+        # Usar solo los botones que existen en la interfaz
         self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
-        self.buttonSave.setText(save_text)
-        self.buttonReset.setText(reset_text)
+        self.buttonSave.setText(i18n.get('buttons.save'))
+        self.buttonReset.setText(i18n.get('buttons.reset'))
         
         # Update checkbox texts
-        pp_text = i18n.get('checkboxes.pp')
-        denoise_text = i18n.get('checkboxes.denoise')
-        self.checkBoxPP.setText(pp_text)
-        self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
-        self.checkBoxDenoise.setText(denoise_text)
+        # Usar los nombres correctos de los checkboxes
+        self.checkBoxDenoise.setText(i18n.get('checkboxes.denoise'))
+        self.checkBoxPP.setText(i18n.get('checkboxes.pp'))
+        # Añadir tooltips para los checkboxes
         self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
+        self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
         
         # Update slider tooltips
         self.slideThresh.setToolTip(i18n.get('tooltips.threshold'))
@@ -77,6 +78,32 @@ def update_texts(self):
         self.slideBelndwt1.setToolTip(i18n.get('tooltips.blend_weight'))
         self.slideBgBlur.setToolTip(i18n.get('tooltips.bg_blur'))
         self.sliderSegMode.setToolTip(i18n.get('tooltips.threshold'))
+        
+        # Traducir directamente las etiquetas de los sliders
+        # Obtener el contenedor principal de los sliders
+        frame_sliders = self.findChild(QtWidgets.QFrame, 'frameSliders')
+        if frame_sliders:
+            # Buscar todas las etiquetas en el contenedor de sliders
+            slider_labels = frame_sliders.findChildren(QtWidgets.QLabel)
+            
+            # Crear un diccionario para mapear textos en inglés a sus claves de traducción
+            english_texts = {
+                'Brightness': 'labels.brightness',
+                'Saturation': 'labels.saturation',
+                'Preserve': 'labels.blend_weight',
+                'Threshold': 'labels.threshold',
+                'Edge Blur': 'labels.blur_edge',
+                'Bg Blur': 'labels.bg_blur'
+            }
+            
+            # Traducir las etiquetas que coincidan con los textos en inglés
+            for label in slider_labels:
+                current_text = label.text()
+                if current_text in english_texts:
+                    translation_key = english_texts[current_text]
+                    translated_text = i18n.get(translation_key)
+                    print(f"Traduciendo etiqueta de slider '{current_text}' a '{translated_text}'")
+                    label.setText(translated_text)
         
         # Update all labels in the interface
         # Definir las claves de traducciu00f3n para las etiquetas principales
@@ -148,9 +175,11 @@ def update_texts(self):
     except Exception as e:
         print(f"Error updating texts: {e}")
 
+
+
 def update_menu_texts(self):
-    """Updates the menu texts"""
-    # Update menu texts
+    """Updates menu texts with the current language"""
+    # Update menu titles
     menuFile = self.findChild(QMenu, "menuFile")
     menuHelp = self.findChild(QMenu, "menuHelp")
     menuTools = self.findChild(QMenu, "menuTools")

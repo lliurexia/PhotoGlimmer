@@ -742,7 +742,9 @@ def  main():
     window = Ui()
     window.setAppStyleSheets() 
     app.exec_()
-    tempdir.cleanup()
+    # Comprobar si tempdir existe antes de intentar limpiarlo
+    if tempdir is not None:
+        tempdir.cleanup()
     sys.exit(0)
 
 
