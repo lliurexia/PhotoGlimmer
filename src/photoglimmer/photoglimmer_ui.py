@@ -740,23 +740,23 @@ def  main():
 
 # Añadir métodos para la gestión de idiomas a la clase Ui
 def Ui_setupLanguageMenu(self):
-    """Configura el menú de idiomas"""
-    # Encontrar el menú de herramientas
+    """Sets up the language menu"""
+    # Find the tools menu
     tools_menu = self.findChild(QMenu, "menuTools")
     if not tools_menu:
         return
     
-    # Crear un nuevo menú para idiomas
+    # Create a new menu for languages
     self.language_menu = QMenu(i18n.get('menu.language', 'Language'), self)
     tools_menu.addSeparator()
     tools_menu.addMenu(self.language_menu)
     
-    # Añadir acciones para cada idioma disponible
+    # Add actions for each available language
     languages = i18n.get_languages()
     language_names = {
         'en': 'English',
-        'es': 'Español',
-        'ca': 'Català'
+        'es': 'Spanish',
+        'ca': 'Catalan'
     }
     
     for lang in languages:
@@ -767,37 +767,33 @@ def Ui_setupLanguageMenu(self):
 
 
 def Ui_changeLanguage(self):
-    """Cambia el idioma de la aplicación"""
+    """Changes the application language"""
     action = self.sender()
     if action:
         lang_code = action.data()
-        print(f"Cambiando idioma a: {lang_code}")
         result = i18n.set_language(lang_code)
-        print(f"Resultado de cambiar idioma: {result}")
         if result:
-            print("Actualizando textos de la interfaz...")
             self.updateTexts()
-            print("Textos actualizados.")
 
 
 def Ui_updateTexts(self):
-    """Actualiza todos los textos de la interfaz con el idioma actual"""
+    """Updates all UI texts with the current language"""
     try:
-        # Obtener el idioma actual
+        # Get current language
         current_lang = i18n.get_current_language()
         
-        # Actualizar título de la ventana
+        # Update window title
         title_text = f"{appname}: {i18n.get('app.title')}"
         self.setWindowTitle(title_text)
         
-        # Actualizar textos de los botones
+        # Update button texts
         save_text = i18n.get('buttons.save')
         reset_text = i18n.get('buttons.reset')
         self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
         self.buttonSave.setText(save_text)
         self.buttonReset.setText(reset_text)
         
-        # Actualizar textos de los checkboxes
+        # Update checkbox texts
         pp_text = i18n.get('checkboxes.pp')
         denoise_text = i18n.get('checkboxes.denoise')
         self.checkBoxPP.setText(pp_text)
@@ -805,7 +801,7 @@ def Ui_updateTexts(self):
         self.checkBoxDenoise.setText(denoise_text)
         self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
         
-        # Actualizar tooltips de los sliders
+        # Update slider tooltips
         self.slideThresh.setToolTip(i18n.get('tooltips.threshold'))
         self.slideSaturat.setToolTip(i18n.get('tooltips.saturation'))
         self.slideBrightness.setToolTip(i18n.get('tooltips.brightness'))
@@ -814,8 +810,8 @@ def Ui_updateTexts(self):
         self.slideBgBlur.setToolTip(i18n.get('tooltips.bg_blur'))
         self.sliderSegMode.setToolTip(i18n.get('tooltips.threshold'))
         
-        # Actualizar todas las etiquetas en la interfaz
-        # Mapeo de textos en inglés a claves de traducción
+        # Update all labels in the interface
+        # Mapping of English texts to translation keys
         label_text_mapping = {
             "Brightness": "labels.brightness",
             "Saturation": "labels.saturation",
@@ -827,10 +823,10 @@ def Ui_updateTexts(self):
             "Denoise": "checkboxes.denoise"
         }
         
-        # Buscar todas las etiquetas en la interfaz
+        # Find all labels in the interface
         all_labels = self.window.findChildren(QtWidgets.QLabel)
         
-        # Actualizar cada etiqueta si su texto actual está en el mapeo
+        # Update each label if its current text is in the mapping
         for label in all_labels:
             current_text = label.text()
             if current_text in label_text_mapping:
@@ -838,19 +834,19 @@ def Ui_updateTexts(self):
                 translated_text = i18n.get(translation_key)
                 label.setText(translated_text)
         
-        # Actualizar todos los botones en la interfaz
+        # Update all buttons in the interface
         all_buttons = self.window.findChildren(QtWidgets.QPushButton)
         
-        # Actualizar textos de menú
+        # Update menu texts
         self.updateMenuTexts()
     except Exception as e:
-        print(f"Error al actualizar textos: {e}")
+        print(f"Error updating texts: {e}")
     
 
 
 def Ui_updateMenuTexts(self):
-    """Actualiza los textos de los menús"""
-    # Actualizar textos de los menús
+    """Updates the menu texts"""
+    # Update menu texts
     menuFile = self.findChild(QMenu, "menuFile")
     menuHelp = self.findChild(QMenu, "menuHelp")
     menuTools = self.findChild(QMenu, "menuTools")

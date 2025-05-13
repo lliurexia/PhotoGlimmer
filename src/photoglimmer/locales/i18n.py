@@ -1,5 +1,5 @@
 # ###############################################################################
-# Módulo de localización para PhotoGlimmer
+# Localization module for PhotoGlimmer
 # ###############################################################################
 
 import os
@@ -8,31 +8,31 @@ import locale
 from pathlib import Path
 
 class I18n:
-    """Clase para gestionar la internacionalización de PhotoGlimmer"""
+    """Class for managing PhotoGlimmer internationalization"""
     
     def __init__(self, lang=None):
-        """Inicializa el sistema de traducción
+        """Initializes the translation system
         
         Args:
-            lang (str, optional): Código de idioma a usar. Si es None, se detecta automáticamente.
+            lang (str, optional): Language code to use. If None, it is automatically detected.
         """
         self.translations = {}
         self.current_lang = None
         
-        # Directorio donde se encuentran los archivos de traducción
+        # Directory where translation files are located
         self.locales_dir = Path(os.path.dirname(os.path.abspath(__file__)))
         
-        # Cargar todos los idiomas disponibles
+        # Load all available languages
         self._load_available_languages()
         
-        # Establecer el idioma
+        # Set the language
         if lang and lang in self.available_languages:
             self.set_language(lang)
         else:
             self._detect_and_set_language()
     
     def _load_available_languages(self):
-        """Carga la lista de idiomas disponibles basándose en los archivos JSON en el directorio locales"""
+        """Loads the list of available languages based on JSON files in the locales directory"""
         self.available_languages = []
         for file in self.locales_dir.glob("*.json"):
             lang_code = file.stem
@@ -46,35 +46,35 @@ class I18n:
                 pass
     
     def _detect_and_set_language(self):
-        """Detecta el idioma del sistema y establece el idioma más cercano disponible"""
+        """Detects the system language and sets the closest available language"""
         try:
             system_lang, _ = locale.getdefaultlocale()
             if system_lang:
                 lang_code = system_lang.split('_')[0].lower()
                 
-                # Comprobar si el idioma está disponible
+                # Check if the language is available
                 if lang_code in self.available_languages:
                     self.set_language(lang_code)
                     return
         except Exception:
             pass
         
-        # Si no se pudo detectar o no está disponible, usar inglés por defecto
+        # If it could not be detected or is not available, use English by default
         if 'en' in self.available_languages:
             self.set_language('en')
         else:
-            # Usar el primer idioma disponible
+            # Use the first available language
             if self.available_languages:
                 self.set_language(self.available_languages[0])
     
     def set_language(self, lang_code):
-        """Establece el idioma actual
+        """Sets the current language
         
         Args:
-            lang_code (str): Código del idioma a establecer
+            lang_code (str): Language code to set
         
         Returns:
-            bool: True si el idioma se estableció correctamente, False en caso contrario
+            bool: True if the language was set successfully, False otherwise
         """
         if lang_code in self.available_languages:
             self.current_lang = lang_code
@@ -82,10 +82,10 @@ class I18n:
         return False
     
     def get_languages(self):
-        """Obtiene la lista de idiomas disponibles
+        """Gets the list of available languages
         
         Returns:
-            list: Lista de códigos de idioma disponibles
+            list: List of available language codes
         """
         return self.available_languages
     
