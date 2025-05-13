@@ -731,7 +731,6 @@ def  main():
     app.setStyle("Fusion")
     qdarktheme.setup_theme("dark")
     window = Ui()
-    window.setupLanguageMenu()
     window.setAppStyleSheets() 
     app.exec_()
     tempdir.cleanup()
@@ -773,6 +772,7 @@ def Ui_changeLanguage(self):
         lang_code = action.data()
         result = i18n.set_language(lang_code)
         if result:
+            # Update UI texts immediately
             self.updateTexts()
 
 

@@ -45,6 +45,8 @@ class I18n:
             except Exception as e:
                 pass
     
+
+    
     def _detect_and_set_language(self):
         """Detects the system language and sets the closest available language"""
         try:
