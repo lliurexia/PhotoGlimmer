@@ -16,8 +16,14 @@
   "tooltips": {
     "browse": "Obre un fitxer d'imatge per a editar",
     "pp": "Processa tota la imatge",
-    "denoise": "Eliminaa soroll de l'àrea seleccionada",
-    "weightage": "Pes per a la imatge original"
+    "denoise": "Elimina soroll de l'àrea seleccionada",
+    "weightage": "Pes per a la imatge original",
+    "threshold": "Ajusta llindar de detecció",
+    "saturation": "Ajusta saturació",
+    "brightness": "Ajusta brillantor",
+    "blur_edge": "Ajusta desenfocament de vores",
+    "blend_weight": "Ajusta pes de la mescla",
+    "bg_blur": "Ajusta desenfocament del fons"
   },
   "menu": {
     "file": "Fitxer",
@@ -41,5 +47,20 @@
   "messages": {
     "message_about": "Missatge sobre",
     "some_message_shown": "Algun missatge mostrat"
+  },
+  "labels": {
+    "threshold": "Llindar",
+    "saturation": "Saturació",
+    "brightness": "Brillantor",
+    "blur_edge": "Desenfocament de vores",
+    "blend_weight": "Pes de mescla",
+    "bg_blur": "Desenfocament de fons",
+    "segmentation_mode": "Mode de segmentació"
+  },
+  "status": {
+    "processing": "Processant imatge...",
+    "ready": "Llest",
+    "drag_drop": "Arrossega i deixa anar una imatge aquí",
+    "saved": "Imatge guardada a: {0}"
   }
 }

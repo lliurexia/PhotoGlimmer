@@ -57,6 +57,13 @@ class  Ui(QtWidgets.QMainWindow):
 
     def  __init__(self):
         super(Ui, self).__init__()
+        
+        # Inicializar el sistema de traducción
+        print("Inicializando sistema de traducción en la UI...")
+        i18n.init()
+        print(f"Idiomas disponibles: {i18n.get_languages()}")
+        print(f"Idioma actual: {i18n.get_current_language()}")
+        
         self.loader = QUiLoader()
         uifile= QFile(self.getAbsolutePathForFile("./photoglimmer_qt.ui"))
         self.window= self.loader.load(uifile)
@@ -71,13 +78,16 @@ class  Ui(QtWidgets.QMainWindow):
         self.createTempDir()
         photoglimmer_backend.initializeImageObjects() 
         self.thread_pool = QThreadPool()
-        self.setWindowTitle(f"{appname}: {i18n.get('app.title')}")
-        self.showMaximized()
-        self.disableSliders()
-        self.setStatus(i18n.get('app.open_image'))
         
         # Configurar menú de idiomas
         self.setupLanguageMenu()
+        
+        # Aplicar traducciones a la interfaz
+        self.updateTexts()
+        
+        self.showMaximized()
+        self.disableSliders()
+        self.setStatus(i18n.get('app.open_image'))
         if len(sys.argv) > 1:
             arg_img = sys.argv[-1]
             if (os.path.exists(arg_img) and  self.isImageURL(arg_img )) :
@@ -459,7 +469,7 @@ class  Ui(QtWidgets.QMainWindow):
         self.labelMask.clear()        
         self.showImage(photoglimmer_backend.resultImgPath)
         self.enableSliders()
-        self.setStatus(f"Edit using sliders. Press Save when done.")
+        self.setStatus(i18n.get('app.save_prompt'))
 
 
     def  goReset(self):
@@ -475,7 +485,7 @@ class  Ui(QtWidgets.QMainWindow):
                              title="Nothing To Save!")
             return
         self.disableSliders()
-        self.setStatus("Saving image..this takes longer than normal edit")
+        self.setStatus(i18n.get('status.processing'))
         self.startBusySpinner()
         photoglimmer_backend.backupScaledImages()
         worker = Worker(self._goSave_bgstuff)
@@ -664,7 +674,7 @@ class  Ui(QtWidgets.QMainWindow):
 
     def  exportTransparency( self):
         self.old_status= self.statusBar.currentMessage()
-        self.setStatus("Copying Foreground , Wait! ")
+        self.setStatus(i18n.get('status.processing'))
         worker2 = Worker(self._transparencyToClipboard)
         worker2.signals.finished.connect(self._displayTransparencyCompleted)
         self.thread_pool.start(worker2)        
@@ -764,28 +774,90 @@ def Ui_changeLanguage(self):
     action = self.sender()
     if action:
         lang_code = action.data()
-        if i18n.set_language(lang_code):
+        print(f"Cambiando idioma a: {lang_code}")
+        result = i18n.set_language(lang_code)
+        print(f"Resultado de cambiar idioma: {result}")
+        if result:
+            print("Actualizando textos de la interfaz...")
             self.updateTexts()
+            print("Textos actualizados.")
 
 
 def Ui_updateTexts(self):
     """Actualiza todos los textos de la interfaz con el idioma actual"""
-    # Actualizar título de la ventana
-    self.setWindowTitle(f"{appname}: {i18n.get('app.title')}")
+    try:
+        # Obtener el idioma actual
+        current_lang = i18n.get_current_language()
+        print(f"Idioma actual: {current_lang}")
+        
+        # Actualizar título de la ventana
+        title_text = f"{appname}: {i18n.get('app.title')}"
+        print(f"Actualizando título a: {title_text}")
+        self.setWindowTitle(title_text)
+        
+        # Actualizar textos de los botones
+        save_text = i18n.get('buttons.save')
+        reset_text = i18n.get('buttons.reset')
+        print(f"Texto botón guardar: {save_text}, botón reset: {reset_text}")
+        self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
+        self.buttonSave.setText(save_text)
+        self.buttonReset.setText(reset_text)
+        
+        # Actualizar textos de los checkboxes
+        pp_text = i18n.get('checkboxes.pp')
+        denoise_text = i18n.get('checkboxes.denoise')
+        print(f"Texto checkbox PP: {pp_text}, checkbox Denoise: {denoise_text}")
+        self.checkBoxPP.setText(pp_text)
+        self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
+        self.checkBoxDenoise.setText(denoise_text)
+        self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
+        
+        # Actualizar tooltips de los sliders
+        self.slideThresh.setToolTip(i18n.get('tooltips.threshold'))
+        self.slideSaturat.setToolTip(i18n.get('tooltips.saturation'))
+        self.slideBrightness.setToolTip(i18n.get('tooltips.brightness'))
+        self.slideBlurEdge.setToolTip(i18n.get('tooltips.blur_edge'))
+        self.slideBelndwt1.setToolTip(i18n.get('tooltips.blend_weight'))
+        self.slideBgBlur.setToolTip(i18n.get('tooltips.bg_blur'))
+        self.sliderSegMode.setToolTip(i18n.get('tooltips.threshold'))
+        
+        # Actualizar todas las etiquetas en la interfaz
+        # Mapeo de textos en inglés a claves de traducción
+        label_text_mapping = {
+            "Brightness": "labels.brightness",
+            "Saturation": "labels.saturation",
+            "Preserve": "labels.blend_weight",
+            "Threshold": "labels.threshold",
+            "Edge Blur": "labels.blur_edge",
+            "Bg Blur": "labels.bg_blur",
+            "PP": "checkboxes.pp",
+            "Denoise": "checkboxes.denoise"
+        }
+        
+        # Buscar todas las etiquetas en la interfaz
+        all_labels = self.window.findChildren(QtWidgets.QLabel)
+        print(f"Encontradas {len(all_labels)} etiquetas en la interfaz")
+        
+        # Actualizar cada etiqueta si su texto actual está en el mapeo
+        for label in all_labels:
+            current_text = label.text()
+            if current_text in label_text_mapping:
+                translation_key = label_text_mapping[current_text]
+                translated_text = i18n.get(translation_key)
+                print(f"Traduciendo etiqueta '{current_text}' a '{translated_text}'")
+                label.setText(translated_text)
+        
+        # Actualizar todos los botones en la interfaz
+        all_buttons = self.window.findChildren(QtWidgets.QPushButton)
+        print(f"Encontrados {len(all_buttons)} botones en la interfaz")
+        
+        # Actualizar textos de menú
+        print("Actualizando textos de menú...")
+        self.updateMenuTexts()
+        print("Textos de menú actualizados.")
+    except Exception as e:
+        print(f"Error al actualizar textos: {e}")
     
-    # Actualizar textos de los botones
-    self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
-    self.buttonSave.setText(i18n.get('buttons.save'))
-    self.buttonReset.setText(i18n.get('buttons.reset'))
-    
-    # Actualizar textos de los checkboxes
-    self.checkBoxPP.setText(i18n.get('checkboxes.pp'))
-    self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
-    self.checkBoxDenoise.setText(i18n.get('checkboxes.denoise'))
-    self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
-    
-    # Actualizar textos de menú
-    self.updateMenuTexts()
 
 
 def Ui_updateMenuTexts(self):

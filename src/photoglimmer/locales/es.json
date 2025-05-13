@@ -17,7 +17,13 @@
     "browse": "Abrir un archivo de imagen para editar",
     "pp": "Procesar toda la imagen",
     "denoise": "Eliminar ruido del área seleccionada",
-    "weightage": "Peso para la imagen original"
+    "weightage": "Peso para la imagen original",
+    "threshold": "Ajustar umbral de detección",
+    "saturation": "Ajustar saturación",
+    "brightness": "Ajustar brillo",
+    "blur_edge": "Ajustar desenfoque de bordes",
+    "blend_weight": "Ajustar peso de la mezcla",
+    "bg_blur": "Ajustar desenfoque del fondo"
   },
   "menu": {
     "file": "Archivo",
@@ -41,5 +47,20 @@
   "messages": {
     "message_about": "Mensaje sobre",
     "some_message_shown": "Algún mensaje mostrado"
+  },
+  "labels": {
+    "threshold": "Umbral",
+    "saturation": "Saturación",
+    "brightness": "Brillo",
+    "blur_edge": "Desenfoque de bordes",
+    "blend_weight": "Peso de mezcla",
+    "bg_blur": "Desenfoque de fondo",
+    "segmentation_mode": "Modo de segmentación"
+  },
+  "status": {
+    "processing": "Procesando imagen...",
+    "ready": "Listo",
+    "drag_drop": "Arrastra y suelta una imagen aquí",
+    "saved": "Imagen guardada en: {0}"
   }
 }

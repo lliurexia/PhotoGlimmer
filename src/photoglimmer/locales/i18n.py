@@ -34,13 +34,19 @@ class I18n:
     def _load_available_languages(self):
         """Carga la lista de idiomas disponibles basándose en los archivos JSON en el directorio locales"""
         self.available_languages = []
+        print(f"Directorio de locales: {self.locales_dir}")
         for file in self.locales_dir.glob("*.json"):
             lang_code = file.stem
+            print(f"Encontrado archivo de idioma: {file} - Código: {lang_code}")
             self.available_languages.append(lang_code)
             
             # Cargar las traducciones
-            with open(file, 'r', encoding='utf-8') as f:
-                self.translations[lang_code] = json.load(f)
+            try:
+                with open(file, 'r', encoding='utf-8') as f:
+                    self.translations[lang_code] = json.load(f)
+                    print(f"Traducciones cargadas para {lang_code}: {len(self.translations[lang_code])} claves principales")
+            except Exception as e:
+                print(f"Error al cargar traducciones para {lang_code}: {e}")
     
     def _detect_and_set_language(self):
         """Detecta el idioma del sistema y establece el idioma más cercano disponible"""
@@ -73,9 +79,13 @@ class I18n:
         Returns:
             bool: True si el idioma se estableció correctamente, False en caso contrario
         """
+        print(f"Intentando establecer idioma: {lang_code}")
+        print(f"Idiomas disponibles: {self.available_languages}")
         if lang_code in self.available_languages:
+            print(f"Idioma {lang_code} encontrado, estableciendo como actual")
             self.current_lang = lang_code
             return True
+        print(f"Idioma {lang_code} no encontrado en los idiomas disponibles")
         return False
     
     def get_languages(self):
