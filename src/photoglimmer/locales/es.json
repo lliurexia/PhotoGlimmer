@@ -7,7 +7,9 @@
   "buttons": {
     "browse": "Explorar",
     "save": "Guardar",
-    "reset": "Restablecer"
+    "reset": "Restablecer",
+    "yes": "Sí",
+    "no": "No"
   },
   "checkboxes": {
     "pp": "PP",

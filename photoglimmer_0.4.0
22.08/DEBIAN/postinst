@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+# Instalar dependencias de Python específicas
+pip3 install "numpy==1.24.3" "opencv-contrib-python==4.8.1.78" "mediapipe==0.10.7" "pyqtdarktheme~=2.1.0" "splines~=0.3.0" "piexif~=1.1.3"
+
+exit 0

@@ -244,13 +244,22 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  showConfirmationBox(self, titl=None, questn=None):
-        reply = QMessageBox.question(self,
-                                     titl if titl else i18n.get('dialogs.confirm'),
-                                     questn if questn else i18n.get('dialogs.really'),
-                                      QMessageBox.Yes | QMessageBox.No,
-                                      QMessageBox.No)
-        result= False
-        result= True if reply == QMessageBox.Yes else False
+        # Create a custom message box to use localized button texts
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setWindowTitle(titl if titl else i18n.get('dialogs.confirm'))
+        msg_box.setText(questn if questn else i18n.get('dialogs.really'))
+        
+        # Add localized Yes and No buttons
+        yes_button = msg_box.addButton(i18n.get('buttons.yes'), QMessageBox.YesRole)
+        no_button = msg_box.addButton(i18n.get('buttons.no'), QMessageBox.NoRole)
+        msg_box.setDefaultButton(no_button)
+        
+        # Show the dialog and get the result
+        msg_box.exec_()
+        
+        # Check which button was clicked
+        result = msg_box.clickedButton() == yes_button
         return result
 
 

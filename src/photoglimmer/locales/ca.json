@@ -7,7 +7,9 @@
   "buttons": {
     "browse": "Explora",
     "save": "Guarda",
-    "reset": "Restableix"
+    "reset": "Restableix",
+    "yes": "Sí",
+    "no": "No"
   },
   "checkboxes": {
     "pp": "PP",

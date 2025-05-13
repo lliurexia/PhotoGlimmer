@@ -7,7 +7,9 @@
   "buttons": {
     "browse": "Browse",
     "save": "Save",
-    "reset": "Reset"
+    "reset": "Reset",
+    "yes": "Yes",
+    "no": "No"
   },
   "checkboxes": {
     "pp": "PP",
