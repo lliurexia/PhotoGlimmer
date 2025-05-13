@@ -26,6 +26,7 @@ from photoglimmer.threadwork import *
 import photoglimmer.customfiledialog as customfiledialog
 import photoglimmer.uihelper_transparency 
 import photoglimmer.locales.i18n as i18n
+from photoglimmer.language_methods import setup_language_menu, change_language, update_texts, update_menu_texts
 import cv2
 #/**   START Patch FOR cv2+qt plugin **/
 # https://forum.qt.io/post/654289
@@ -52,6 +53,11 @@ i18n.init()
 
 
 class  Ui(QtWidgets.QMainWindow):
+    # Añadir los métodos de gestión de idiomas
+    setupLanguageMenu = setup_language_menu
+    change_language = change_language  # Usar el mismo nombre que en language_methods.py
+    updateTexts = update_texts
+    updateMenuTexts = update_menu_texts
     tempimage = photoglimmer_backend.fname_resultimg
 
 
@@ -610,7 +616,10 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  createTempDir(self):
-        global tempdir
+        import  qdarktheme
+        import tempfile
+        import photoglimmer.locales.i18n as i18n
+
         tempd = tempfile.TemporaryDirectory(prefix=f"{appname}_")
         tempdir = tempd
         photoglimmer_backend.tempdirpath = tempd.name
@@ -737,35 +746,10 @@ def  main():
     sys.exit(0)
 
 
-# Añadir métodos para la gestión de idiomas a la clase Ui
-def Ui_setupLanguageMenu(self):
-    """Sets up the language menu"""
-    # Find the tools menu
-    tools_menu = self.findChild(QMenu, "menuTools")
-    if not tools_menu:
-        return
-    
-    # Create a new menu for languages
-    self.language_menu = QMenu(i18n.get('menu.language', 'Language'), self)
-    tools_menu.addSeparator()
-    tools_menu.addMenu(self.language_menu)
-    
-    # Add actions for each available language
-    languages = i18n.get_languages()
-    language_names = {
-        'en': 'English',
-        'es': 'Spanish',
-        'ca': 'Catalan'
-    }
-    
-    for lang in languages:
-        action = QAction(language_names.get(lang, lang), self)
-        action.setData(lang)
-        action.triggered.connect(self.changeLanguage)
-        self.language_menu.addAction(action)
+# Métodos para la gestión de idiomas
 
 
-def Ui_changeLanguage(self):
+def changeLanguage(self):
     """Changes the application language"""
     action = self.sender()
     if action:
@@ -776,7 +760,7 @@ def Ui_changeLanguage(self):
             self.updateTexts()
 
 
-def Ui_updateTexts(self):
+def updateTexts(self):
     """Updates all UI texts with the current language"""
     try:
         # Get current language
@@ -844,7 +828,7 @@ def Ui_updateTexts(self):
     
 
 
-def Ui_updateMenuTexts(self):
+def updateMenuTexts(self):
     """Updates the menu texts"""
     # Update menu texts
     menuFile = self.findChild(QMenu, "menuFile")
@@ -877,10 +861,6 @@ def Ui_updateMenuTexts(self):
 
 
 # Añadir los nuevos métodos a la clase Ui
-Ui.setupLanguageMenu = Ui_setupLanguageMenu
-Ui.changeLanguage = Ui_changeLanguage
-Ui.updateTexts = Ui_updateTexts
-Ui.updateMenuTexts = Ui_updateMenuTexts
 
 
 if __name__ == '__main__':
