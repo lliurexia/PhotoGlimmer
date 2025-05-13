@@ -1,0 +1,45 @@
+{
+  "app": {
+    "title": "PhotoGlimmer: Il·lumina'm!",
+    "open_image": "Obre una imatge per a editar",
+    "save_prompt": "Prem 'Guardar' quan hagis acabat d'editar la teva imatge"
+  },
+  "buttons": {
+    "browse": "Explora",
+    "save": "Guarda",
+    "reset": "Restableix"
+  },
+  "checkboxes": {
+    "pp": "PP",
+    "denoise": "Eliminar soroll"
+  },
+  "tooltips": {
+    "browse": "Obre un fitxer d'imatge per a editar",
+    "pp": "Processa tota la imatge",
+    "denoise": "Eliminaa soroll de l'àrea seleccionada",
+    "weightage": "Pes per a la imatge original"
+  },
+  "menu": {
+    "file": "Fitxer",
+    "open": "Obrir",
+    "save": "Guardar",
+    "quit": "Sortir",
+    "help": "Ajuda",
+    "about": "Quant a",
+    "tools": "Eines",
+    "locate_on_disk": "Localitzar al disc",
+    "fg_to_clipboard": "FG al portapapers",
+    "language": "Idioma"
+  },
+  "dialogs": {
+    "open_image": "Obre una imatge",
+    "open_containing_folder": "Obre carpeta contenidora",
+    "save_transparent_png": "Guarda imatge PNG transparent només amb primer pla",
+    "confirm": "Confirma",
+    "really": "Realment?"
+  },
+  "messages": {
+    "message_about": "Missatge sobre",
+    "some_message_shown": "Algun missatge mostrat"
+  }
+}

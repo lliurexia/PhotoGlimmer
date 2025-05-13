@@ -1,0 +1,45 @@
+{
+  "app": {
+    "title": "PhotoGlimmer: Illuminate Me!",
+    "open_image": "Open an image to edit",
+    "save_prompt": "Press 'Save' when you have finished editing your image"
+  },
+  "buttons": {
+    "browse": "Browse",
+    "save": "Save",
+    "reset": "Reset"
+  },
+  "checkboxes": {
+    "pp": "PP",
+    "denoise": "Denoise"
+  },
+  "tooltips": {
+    "browse": "Open an image file to edit",
+    "pp": "PostProcess whole image",
+    "denoise": "Denoise selected area",
+    "weightage": "Weightage for original image"
+  },
+  "menu": {
+    "file": "File",
+    "open": "Open",
+    "save": "Save",
+    "quit": "Quit",
+    "help": "Help",
+    "about": "About",
+    "tools": "Tools",
+    "locate_on_disk": "Locate On Disk",
+    "fg_to_clipboard": "FG to Clipboard",
+    "language": "Language"
+  },
+  "dialogs": {
+    "open_image": "Open an Image",
+    "open_containing_folder": "Open containing folder",
+    "save_transparent_png": "Save Transparent png image with foreground only",
+    "confirm": "Confirm",
+    "really": "really?"
+  },
+  "messages": {
+    "message_about": "Message About",
+    "some_message_shown": "Some message shown"
+  }
+}

@@ -17,7 +17,7 @@ from PySide2 import QtWidgets,  QtCore
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QPixmap, QIcon, QMovie, QKeySequence
 from PySide2.QtCore import QThreadPool, QFile
-from PySide2.QtWidgets import QStyle, QMessageBox, QAction, QGridLayout,QLabel
+from PySide2.QtWidgets import QStyle, QMessageBox, QAction, QGridLayout, QLabel, QMenu
 # Only if using qdarktheme style
 import  qdarktheme
 # This application
@@ -25,6 +25,7 @@ import photoglimmer.photoglimmer_backend as photoglimmer_backend
 from photoglimmer.threadwork import *
 import photoglimmer.customfiledialog as customfiledialog
 import photoglimmer.uihelper_transparency 
+import photoglimmer.locales.i18n as i18n
 import cv2
 #/**   START Patch FOR cv2+qt plugin **/
 # https://forum.qt.io/post/654289
@@ -45,6 +46,9 @@ progbarpath = "resources/spinner3_8.gif"
 tempdir = None
 tempImage_original = "tmp_original.jpg"
 preferSystemFileDlg= False 
+
+# Inicializar el sistema de localización
+i18n.init()
 
 
 class  Ui(QtWidgets.QMainWindow):
@@ -67,10 +71,13 @@ class  Ui(QtWidgets.QMainWindow):
         self.createTempDir()
         photoglimmer_backend.initializeImageObjects() 
         self.thread_pool = QThreadPool()
-        self.setWindowTitle(f"{appname}: Illuminate Me! ")
+        self.setWindowTitle(f"{appname}: {i18n.get('app.title')}")
         self.showMaximized()
         self.disableSliders()
-        self.setStatus(f"Open an image to edit.")
+        self.setStatus(i18n.get('app.open_image'))
+        
+        # Configurar menú de idiomas
+        self.setupLanguageMenu()
         if len(sys.argv) > 1:
             arg_img = sys.argv[-1]
             if (os.path.exists(arg_img) and  self.isImageURL(arg_img )) :
@@ -176,6 +183,9 @@ class  Ui(QtWidgets.QMainWindow):
         self.menuParFolder.triggered.connect(self.openSystemExplorer)
         self.menuAbout.triggered.connect(self.openHelpURL) 
         self.menuTranspExp.triggered.connect(self.exportTransparency)
+        
+        # Actualizar textos de menú
+        self.updateMenuTexts()
 
 
     def  dragEnterEvent(self, event):
@@ -209,21 +219,21 @@ class  Ui(QtWidgets.QMainWindow):
         self.statusBar.showMessage(msg)
 
 
-    def  showMessage(self, title="", text="Message About" ,
-                    message="Some message shown"):
+    def  showMessage(self, title="", text=None ,
+                    message=None):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Information)
-        msg.setText(text)
-        msg.setInformativeText(message)
+        msg.setText(text if text else i18n.get('messages.message_about'))
+        msg.setInformativeText(message if message else i18n.get('messages.some_message_shown'))
         title=f"{appname}: {title} "
         msg.setWindowTitle(title)
         msg.exec_()
 
 
-    def  showConfirmationBox(self, titl="Confirm", questn="really?"):
+    def  showConfirmationBox(self, titl=None, questn=None):
         reply = QMessageBox.question(self,
-                                     titl,
-                                     questn,
+                                     titl if titl else i18n.get('dialogs.confirm'),
+                                     questn if questn else i18n.get('dialogs.really'),
                                       QMessageBox.Yes | QMessageBox.No,
                                       QMessageBox.No)
         result= False
@@ -368,7 +378,7 @@ class  Ui(QtWidgets.QMainWindow):
         self.pixmap = QPixmap(fname)
         myScaledPixmap = self.pixmap
         self.labelImg.setPixmap(myScaledPixmap)
-        self.setStatus("Press 'Save' when you have finished editing your image")
+        self.setStatus(i18n.get('app.save_prompt'))
         if (fname is not self.tempimage):
             self.labelImg.setProperty("toolTip",
                                       photoglimmer_backend.originalImgPath)
@@ -711,13 +721,111 @@ def  main():
         print(f"PhotoGlimmer Version 0.3.0")
         sys.exit(0)
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("Fusion")
     qdarktheme.setup_theme("dark")
-    qdarktheme.setup_theme(custom_colors={"primary":"#ABCDEF" ,
-                                              "foreground>slider.disabledBackground":"#535c66"}) 
     window = Ui()
+    window.setupLanguageMenu()
     window.setAppStyleSheets() 
     app.exec_()
     tempdir.cleanup()
     sys.exit(0)
+
+
+# Añadir métodos para la gestión de idiomas a la clase Ui
+def Ui_setupLanguageMenu(self):
+    """Configura el menú de idiomas"""
+    # Encontrar el menú de herramientas
+    tools_menu = self.findChild(QMenu, "menuTools")
+    if not tools_menu:
+        return
+    
+    # Crear un nuevo menú para idiomas
+    self.language_menu = QMenu(i18n.get('menu.language', 'Language'), self)
+    tools_menu.addSeparator()
+    tools_menu.addMenu(self.language_menu)
+    
+    # Añadir acciones para cada idioma disponible
+    languages = i18n.get_languages()
+    language_names = {
+        'en': 'English',
+        'es': 'Español',
+        'ca': 'Català'
+    }
+    
+    for lang in languages:
+        action = QAction(language_names.get(lang, lang), self)
+        action.setData(lang)
+        action.triggered.connect(self.changeLanguage)
+        self.language_menu.addAction(action)
+
+
+def Ui_changeLanguage(self):
+    """Cambia el idioma de la aplicación"""
+    action = self.sender()
+    if action:
+        lang_code = action.data()
+        if i18n.set_language(lang_code):
+            self.updateTexts()
+
+
+def Ui_updateTexts(self):
+    """Actualiza todos los textos de la interfaz con el idioma actual"""
+    # Actualizar título de la ventana
+    self.setWindowTitle(f"{appname}: {i18n.get('app.title')}")
+    
+    # Actualizar textos de los botones
+    self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
+    self.buttonSave.setText(i18n.get('buttons.save'))
+    self.buttonReset.setText(i18n.get('buttons.reset'))
+    
+    # Actualizar textos de los checkboxes
+    self.checkBoxPP.setText(i18n.get('checkboxes.pp'))
+    self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
+    self.checkBoxDenoise.setText(i18n.get('checkboxes.denoise'))
+    self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
+    
+    # Actualizar textos de menú
+    self.updateMenuTexts()
+
+
+def Ui_updateMenuTexts(self):
+    """Actualiza los textos de los menús"""
+    # Actualizar textos de los menús
+    menuFile = self.findChild(QMenu, "menuFile")
+    menuHelp = self.findChild(QMenu, "menuHelp")
+    menuTools = self.findChild(QMenu, "menuTools")
+    
+    if menuFile:
+        menuFile.setTitle(i18n.get('menu.file'))
+    if menuHelp:
+        menuHelp.setTitle(i18n.get('menu.help'))
+    if menuTools:
+        menuTools.setTitle(i18n.get('menu.tools'))
+    
+    # Actualizar textos de las acciones de menú
+    if self.menuOpen:
+        self.menuOpen.setText(i18n.get('menu.open'))
+        self.menuOpen.setToolTip(i18n.get('dialogs.open_image'))
+    if self.menuSave:
+        self.menuSave.setText(i18n.get('menu.save'))
+    if self.menuQuit:
+        self.menuQuit.setText(i18n.get('menu.quit'))
+    if self.menuAbout:
+        self.menuAbout.setText(i18n.get('menu.about'))
+    if self.menuParFolder:
+        self.menuParFolder.setText(i18n.get('menu.locate_on_disk'))
+        self.menuParFolder.setToolTip(i18n.get('dialogs.open_containing_folder'))
+    if self.menuTranspExp:
+        self.menuTranspExp.setText(i18n.get('menu.fg_to_clipboard'))
+        self.menuTranspExp.setToolTip(i18n.get('dialogs.save_transparent_png'))
+
+
+# Añadir los nuevos métodos a la clase Ui
+Ui.setupLanguageMenu = Ui_setupLanguageMenu
+Ui.changeLanguage = Ui_changeLanguage
+Ui.updateTexts = Ui_updateTexts
+Ui.updateMenuTexts = Ui_updateMenuTexts
+
+
 if __name__ == '__main__':
     main()

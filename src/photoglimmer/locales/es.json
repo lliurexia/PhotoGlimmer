@@ -1,0 +1,45 @@
+{
+  "app": {
+    "title": "PhotoGlimmer: ¡Ilumíname!",
+    "open_image": "Abrir una imagen para editar",
+    "save_prompt": "Presiona 'Guardar' cuando hayas terminado de editar tu imagen"
+  },
+  "buttons": {
+    "browse": "Explorar",
+    "save": "Guardar",
+    "reset": "Restablecer"
+  },
+  "checkboxes": {
+    "pp": "PP",
+    "denoise": "Eliminar ruido"
+  },
+  "tooltips": {
+    "browse": "Abrir un archivo de imagen para editar",
+    "pp": "Procesar toda la imagen",
+    "denoise": "Eliminar ruido del área seleccionada",
+    "weightage": "Peso para la imagen original"
+  },
+  "menu": {
+    "file": "Archivo",
+    "open": "Abrir",
+    "save": "Guardar",
+    "quit": "Salir",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "tools": "Herramientas",
+    "locate_on_disk": "Localizar en disco",
+    "fg_to_clipboard": "FG al portapapeles",
+    "language": "Idioma"
+  },
+  "dialogs": {
+    "open_image": "Abrir una imagen",
+    "open_containing_folder": "Abrir carpeta contenedora",
+    "save_transparent_png": "Guardar imagen PNG transparente solo con primer plano",
+    "confirm": "Confirmar",
+    "really": "¿Realmente?"
+  },
+  "messages": {
+    "message_about": "Mensaje sobre",
+    "some_message_shown": "Algún mensaje mostrado"
+  }
+}
