@@ -7,7 +7,7 @@
 import sys
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QPixmap
-from PySide2.QtWidgets import QApplication, QFileDialog, QVBoxLayout, QLabel, QDialog
+from PySide2.QtWidgets import QApplication, QFileDialog, QVBoxLayout, QLabel, QDialog, QPushButton
 import  qdarktheme
 from photoglimmer.locales import i18n
 
@@ -45,6 +45,9 @@ class  QFileDialogPreview(QFileDialog):
         self.filesSelected.connect(self.onFilesSelected)
         self._fileSelected = None
         self._filesSelected = None 
+        
+        # Translate additional dialog texts
+        self.translateDialogTexts()
 
 
     def  onChange(self, path):
@@ -69,6 +72,25 @@ class  QFileDialogPreview(QFileDialog):
 
     def  getFilesSelected(self):
         return self._filesSelected
+        
+    def translateDialogTexts(self):
+        # Translate the labels and buttons in the dialog
+        # Find widgets by their type and default text
+        for child in self.findChildren(QLabel):
+            if child.text() == 'Look in:':
+                child.setText(i18n.get('dialogs.look_in', 'Look in:'))
+            elif child.text() == 'File name:':
+                child.setText(i18n.get('dialogs.file_name', 'File name:'))
+            elif child.text() == 'Files of type:':
+                child.setText(i18n.get('dialogs.files_of_type', 'Files of type:'))
+                
+        # Translate buttons
+        for button in self.findChildren(QPushButton):
+            if button.text() == 'Open':
+                button.setText(i18n.get('dialogs.open_button', 'Open'))
+            elif button.text() == 'Cancel':
+                button.setText(i18n.get('dialogs.cancel_button', 'Cancel'))
+    
     @staticmethod
 
 

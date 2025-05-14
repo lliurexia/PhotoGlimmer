@@ -58,7 +58,12 @@
     "quit": "¿Salir?",
     "confirm_quit": "¿Estás seguro de que quieres salir?",
     "preview": "Vista previa",
-    "open_image_dialog": "PhotoGlimmer: Abrir una imagen"
+    "open_image_dialog": "PhotoGlimmer: Abrir una imagen",
+    "look_in": "Buscar en",
+    "file_name": "Nombre de archivo",
+    "files_of_type": "Archivos de tipo",
+    "open_button": "Abrir",
+    "cancel_button": "Cancelar"
   },
   "messages": {
     "message_about": "Mensaje sobre",
