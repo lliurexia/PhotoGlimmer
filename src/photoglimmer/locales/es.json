@@ -28,7 +28,8 @@
     "bg_blur": "Ajustar desenfoque del fondo",
     "bg": "Fondo - aplica efectos al fondo",
     "fg": "Primer plano - aplica efectos al primer plano",
-    "segmenter": "Selecciona primer plano o fondo para aplicar efectos"
+    "segmenter": "Selecciona primer plano o fondo para aplicar efectos",
+    "main_image": "No has abierto ninguna imagen. Usa el botón Abrir archivo en la parte superior izquierda."
   },
   "menu": {
     "file": "Archivo",

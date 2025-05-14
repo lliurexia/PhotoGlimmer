@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "PhotoGlimmer: Il·lumina'm!",
-    "open_image": "Obre una imatge per a editar",
+    "open_image": "Obri una imatge per a editar",
     "save_prompt": "Prem 'Guardar' quan hagis acabat d'editar la teva imatge"
   },
   "buttons": {
@@ -28,13 +28,14 @@
     "bg_blur": "Ajusta desenfocament del fons",
     "bg": "Fons - aplica efectes al fons",
     "fg": "Primer pla - aplica efectes al primer pla",
-    "segmenter": "Selecciona primer pla o fons per aplicar efectes"
+    "segmenter": "Selecciona primer pla o fons per aplicar efectes",
+    "main_image": "No has obert cap imatge. Utilitza el botó Obri fitxer a la part superior esquerra."
   },
   "menu": {
     "file": "Fitxer",
     "open": "Obrir",
     "save": "Guardar",
-    "quit": "Sortir",
+    "quit": "Eixir",
     "help": "Ajuda",
     "about": "Quant a",
     "tools": "Eines",
@@ -43,8 +44,8 @@
     "language": "Idioma"
   },
   "dialogs": {
-    "open_image": "Obre una imatge",
-    "open_containing_folder": "Obre carpeta contenidora",
+    "open_image": "Obri una imatge",
+    "open_containing_folder": "Obri carpeta contenidora",
     "save_transparent_png": "Guarda imatge PNG transparent només amb primer pla",
     "confirm": "Confirma",
     "really": "Realment?",
@@ -54,7 +55,7 @@
     "invalid_file": "Arxiu invàlid",
     "not_an_image": "No és una imatge?",
     "quit": "Sortir?",
-    "confirm_quit": "Estàs segur que vols sortir?"
+    "confirm_quit": "Estàs segur que vols eixir?"
   },
   "messages": {
     "message_about": "Missatge sobre",

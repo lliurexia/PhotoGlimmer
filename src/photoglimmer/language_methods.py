@@ -78,6 +78,10 @@ def update_texts(self):
             self.labelBG.setToolTip(i18n.get('tooltips.bg', 'Background - applies effects to background'))
         if hasattr(self, 'labelFG'):
             self.labelFG.setToolTip(i18n.get('tooltips.fg', 'Foreground - applies effects to foreground'))
+            
+        # Update main image tooltip
+        if hasattr(self, 'labelImg'):
+            self.labelImg.setToolTip(i18n.get('tooltips.main_image', 'You have not opened any image file. Use File Open button on top left.'))
         
         # Handle slider labels using a more robust approach
         frame_sliders = self.findChild(QtWidgets.QFrame, 'frameSliders')
