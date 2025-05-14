@@ -19,7 +19,21 @@
     "browse": "Open an image file to edit",
     "pp": "PostProcess whole image",
     "denoise": "Denoise selected area",
-    "weightage": "Weightage for original image"
+    "weightage": "Weightage for original image",
+    "threshold": "Adjust threshold value",
+    "saturation": "Adjust saturation level",
+    "brightness": "Adjust brightness level",
+    "blur_edge": "Adjust edge blur intensity",
+    "blend_weight": "Adjust blending weight",
+    "bg_blur": "Adjust background blur intensity"
+  },
+  "labels": {
+    "brightness": "Brightness",
+    "saturation": "Saturation",
+    "blend_weight": "Preserve",
+    "threshold": "Threshold",
+    "blur_edge": "Edge Blur",
+    "bg_blur": "Bg Blur"
   },
   "menu": {
     "file": "File",

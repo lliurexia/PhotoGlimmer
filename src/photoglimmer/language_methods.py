@@ -1,11 +1,11 @@
-# Mu00e9todos para la gestiu00f3n de idiomas en PhotoGlimmer
+# Methods for language management in PhotoGlimmer
 
 from PySide2.QtWidgets import QMenu, QAction, QLabel, QPushButton
 from PySide2 import QtWidgets
 from PySide2.QtCore import Qt
 import photoglimmer.locales.i18n as i18n
 
-# Variable global para el nombre de la aplicaciu00f3n
+# Global variable for the application name
 appname = "PhotoGlimmer"
 
 def setup_language_menu(self):
@@ -47,30 +47,24 @@ def change_language(self):
 def update_texts(self):
     """Updates all UI texts with the current language"""
     try:
-        # Get current language
-        current_lang = i18n.get_current_language()
-        
         # Update window title
-        # Importar appname de manera relativa para evitar errores
         from . import photoglimmer_ui
         title_text = f"{photoglimmer_ui.appname}: {i18n.get('app.title')}"
         self.setWindowTitle(title_text)
         
-        # Update button texts
-        # Usar solo los botones que existen en la interfaz
+        # Direct update of specific UI elements
+        # Buttons
         self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
         self.buttonSave.setText(i18n.get('buttons.save'))
         self.buttonReset.setText(i18n.get('buttons.reset'))
         
-        # Update checkbox texts
-        # Usar los nombres correctos de los checkboxes
+        # Checkboxes
         self.checkBoxDenoise.setText(i18n.get('checkboxes.denoise'))
-        self.checkBoxPP.setText(i18n.get('checkboxes.pp'))
-        # Añadir tooltips para los checkboxes
         self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
+        self.checkBoxPP.setText(i18n.get('checkboxes.pp'))
         self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
         
-        # Update slider tooltips
+        # Slider tooltips
         self.slideThresh.setToolTip(i18n.get('tooltips.threshold'))
         self.slideSaturat.setToolTip(i18n.get('tooltips.saturation'))
         self.slideBrightness.setToolTip(i18n.get('tooltips.brightness'))
@@ -79,96 +73,73 @@ def update_texts(self):
         self.slideBgBlur.setToolTip(i18n.get('tooltips.bg_blur'))
         self.sliderSegMode.setToolTip(i18n.get('tooltips.threshold'))
         
-        # Traducir directamente las etiquetas de los sliders
-        # Obtener el contenedor principal de los sliders
+        # Handle slider labels using a more robust approach
         frame_sliders = self.findChild(QtWidgets.QFrame, 'frameSliders')
         if frame_sliders:
-            # Buscar todas las etiquetas en el contenedor de sliders
+            # Map slider positions to translation keys
+            # We'll use the label's geometry to identify which label is which
             slider_labels = frame_sliders.findChildren(QtWidgets.QLabel)
             
-            # Crear un diccionario para mapear textos en inglés a sus claves de traducción
-            english_texts = {
-                'Brightness': 'labels.brightness',
-                'Saturation': 'labels.saturation',
-                'Preserve': 'labels.blend_weight',
-                'Threshold': 'labels.threshold',
-                'Edge Blur': 'labels.blur_edge',
-                'Bg Blur': 'labels.bg_blur'
-            }
+            # Just in case it's the first run, set property on each label for identification
+            # This is a one-time setup that will help with language switching
+            if not hasattr(self, '_slider_labels_tagged'):
+                # Standard slider labels and their translation keys
+                slider_keys = [
+                    'labels.brightness',
+                    'labels.saturation', 
+                    'labels.blend_weight',
+                    'labels.threshold',
+                    'labels.blur_edge',
+                    'labels.bg_blur'
+                ]
+                
+                # English text to identify first-time labels
+                english_texts = {
+                    'Brightness': 'labels.brightness',
+                    'Saturation': 'labels.saturation',
+                    'Preserve': 'labels.blend_weight',
+                    'Threshold': 'labels.threshold',
+                    'Edge Blur': 'labels.blur_edge',
+                    'Bg Blur': 'labels.bg_blur'
+                }
+                
+                # Initially tag labels by their English text
+                for label in slider_labels:
+                    current_text = label.text()
+                    if current_text in english_texts:
+                        # Store the translation key as a property of the label
+                        label.setProperty('translation_key', english_texts[current_text])
+                
+                # Mark that we've tagged the labels
+                self._slider_labels_tagged = True
             
-            # Traducir las etiquetas que coincidan con los textos en inglés
+            # Now translate all labels based on their stored translation key
             for label in slider_labels:
-                current_text = label.text()
-                if current_text in english_texts:
-                    translation_key = english_texts[current_text]
+                translation_key = label.property('translation_key')
+                if translation_key:
                     translated_text = i18n.get(translation_key)
-                    print(f"Traduciendo etiqueta de slider '{current_text}' a '{translated_text}'")
                     label.setText(translated_text)
         
-        # Update all labels in the interface
-        # Definir las claves de traducciu00f3n para las etiquetas principales
-        label_keys = [
-            "labels.brightness",
-            "labels.saturation",
-            "labels.blend_weight",
-            "labels.threshold",
-            "labels.blur_edge",
-            "labels.bg_blur",
-            "checkboxes.pp",
-            "checkboxes.denoise"
-        ]
-        
-        # Definir mapeo de nombres de objetos a claves de traducciu00f3n
-        label_object_mapping = {
-            "labelBrightness": "labels.brightness",
-            "labelSaturation": "labels.saturation",
-            "labelBlendWeight": "labels.blend_weight",
-            "labelThreshold": "labels.threshold",
-            "labelBlurEdge": "labels.blur_edge",
-            "labelBgBlur": "labels.bg_blur"
+        # Define mapping of object names to translation keys for other UI elements
+        ui_element_mapping = {
+            # Labels
+            "labelBrightness": {"type": QtWidgets.QLabel, "key": "labels.brightness"},
+            "labelSaturation": {"type": QtWidgets.QLabel, "key": "labels.saturation"},
+            "labelBlendWeight": {"type": QtWidgets.QLabel, "key": "labels.blend_weight"},
+            "labelThreshold": {"type": QtWidgets.QLabel, "key": "labels.threshold"},
+            "labelBlurEdge": {"type": QtWidgets.QLabel, "key": "labels.blur_edge"},
+            "labelBgBlur": {"type": QtWidgets.QLabel, "key": "labels.bg_blur"},
+            
+            # Any additional UI elements can be added here following the same pattern
+            # e.g., "elementName": {"type": ElementType, "key": "translation.key"}
         }
         
-        # Buscar todas las etiquetas con nombres específicos y actualizarlas
-        for obj_name, translation_key in label_object_mapping.items():
-            label = self.window.findChild(QtWidgets.QLabel, obj_name)
-            if label:
-                translated_text = i18n.get(translation_key)
-                print(f"Traduciendo etiqueta '{obj_name}' a '{translated_text}'")
-                label.setText(translated_text)
-        
-        # Buscar etiquetas por texto
-        # Primero, obtener todas las etiquetas de la interfaz
-        all_labels = self.window.findChildren(QtWidgets.QLabel)
-        print(f"Encontradas {len(all_labels)} etiquetas en la interfaz")
-        
-        # Crear un mapeo de textos posibles a claves de traducciu00f3n
-        # Esto incluye textos en todos los idiomas disponibles
-        text_to_key = {}
-        for key in label_keys:
-            # Obtener la traducciu00f3n en cada idioma disponible
-            for lang in i18n.get_languages():
-                # Guardar temporalmente el idioma actual
-                current_lang = i18n.get_current_language()
-                # Cambiar al idioma para obtener la traducciu00f3n
-                i18n.set_language(lang)
-                # Obtener la traducciu00f3n en este idioma
-                translated_text = i18n.get(key)
-                if translated_text:
-                    text_to_key[translated_text] = key
-                # Restaurar el idioma original
-                i18n.set_language(current_lang)
-        
-        # Actualizar cada etiqueta si su texto actual estu00e1 en el mapeo
-        for label in all_labels:
-            current_text = label.text()
-            if current_text in text_to_key:
-                translation_key = text_to_key[current_text]
-                translated_text = i18n.get(translation_key)
-                print(f"Traduciendo etiqueta '{current_text}' a '{translated_text}'")
-                label.setText(translated_text)
-        
-        # Update all buttons in the interface
-        all_buttons = self.window.findChildren(QtWidgets.QPushButton)
+        # Update all elements using the mapping
+        for obj_name, info in ui_element_mapping.items():
+            element = self.window.findChild(info["type"], obj_name)
+            if element:
+                translated_text = i18n.get(info["key"])
+                element.setText(translated_text)
         
         # Update menu texts
         self.updateMenuTexts()
