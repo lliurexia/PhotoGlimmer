@@ -636,11 +636,18 @@ class  Ui(QtWidgets.QMainWindow):
         import  qdarktheme
         import tempfile
         import photoglimmer.locales.i18n as i18n
+        import os
         
         global tempdir
         tempd = tempfile.TemporaryDirectory(prefix=f"{appname}_")
         tempdir = tempd
         photoglimmer_backend.tempdirpath = tempd.name
+        
+        # Cambiar permisos del directorio temporal para hacerlo legible por todos
+        try:
+            os.chmod(tempd.name, 0o755)  # rwxr-xr-x: permisos de lectura y ejecución para todos
+        except Exception as e:
+            print(f"Error al cambiar permisos del directorio temporal: {e}")
 
 
     def  createTempFile(self, fname, img,jpegqual=100):
