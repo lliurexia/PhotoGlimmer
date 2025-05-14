@@ -56,7 +56,9 @@
     "invalid_file": "Archivo inválido",
     "not_an_image": "¿No es una imagen?",
     "quit": "¿Salir?",
-    "confirm_quit": "¿Estás seguro de que quieres salir?"
+    "confirm_quit": "¿Estás seguro de que quieres salir?",
+    "preview": "Vista previa",
+    "open_image_dialog": "PhotoGlimmer: Abrir una imagen"
   },
   "messages": {
     "message_about": "Mensaje sobre",

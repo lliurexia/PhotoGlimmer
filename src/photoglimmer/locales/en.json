@@ -53,18 +53,20 @@
     "language": "Language"
   },
   "dialogs": {
-    "open_image": "Open an Image",
+    "open_image": "Open an image",
     "open_containing_folder": "Open containing folder",
-    "save_transparent_png": "Save Transparent png image with foreground only",
+    "save_transparent_png": "Save transparent PNG image with foreground only",
     "confirm": "Confirm",
-    "really": "really?",
-    "save_image": "Save Image",
-    "image_files": "Image Files",
+    "really": "Really?",
+    "save_image": "Save image",
+    "image_files": "Image files",
     "error": "Error",
     "invalid_file": "Invalid file",
     "not_an_image": "Not an image?",
     "quit": "Quit?",
-    "confirm_quit": "Are you sure you want to quit?"
+    "confirm_quit": "Are you sure you want to quit?",
+    "preview": "Preview",
+    "open_image_dialog": "PhotoGlimmer: Open an Image"
   },
   "messages": {
     "message_about": "Message About",

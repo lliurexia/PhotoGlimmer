@@ -9,6 +9,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import QApplication, QFileDialog, QVBoxLayout, QLabel, QDialog
 import  qdarktheme
+from photoglimmer.locales import i18n
 
 
 class  QFileDialogPreview(QFileDialog):
@@ -18,14 +19,15 @@ class  QFileDialogPreview(QFileDialog):
         QFileDialog.__init__(self, *args, **kwargs)
         self.setOption(QFileDialog.DontUseNativeDialog, True)
         self.setOption(QFileDialog.HideNameFilterDetails, True)      
-        self.setWindowTitle("PhotoGlimmer: Open an Image")        
+        self.setWindowTitle(i18n.get('dialogs.open_image_dialog', "PhotoGlimmer: Open an Image"))        
         layoutV = QVBoxLayout()
         layoutV.setAlignment(Qt.AlignVCenter )
         layoutV.setMargin(10)
         self.setBaseSize(self.width() + 350, self.height())
         self.setSizeGripEnabled(True)
-        self.setNameFilter('Images (*.png *.jpg *.bmp *.webp *.JPG *.jpeg *.JPEG )')
-        self.mpPreview = QLabel("Preview", self)
+        image_files = i18n.get('dialogs.image_files', 'Image files')
+        self.setNameFilter(f'{image_files} (*.png *.jpg *.bmp *.webp *.JPG *.jpeg *.JPEG )')
+        self.mpPreview = QLabel(i18n.get('dialogs.preview', "Preview"), self)
         self.mpPreview.setFixedSize(250, 250)
         self.mpPreview.setAlignment(Qt.AlignCenter)
         self.mpPreview.setObjectName("labelPreview")
@@ -48,7 +50,7 @@ class  QFileDialogPreview(QFileDialog):
     def  onChange(self, path):
         pixmap = QPixmap(path)
         if(pixmap.isNull()):
-            self.mpPreview.setText("Preview")
+            self.mpPreview.setText(i18n.get('dialogs.preview', "Preview"))
         else:
             self.mpPreview.setPixmap(pixmap.scaled(self.mpPreview.width(), self.mpPreview.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 

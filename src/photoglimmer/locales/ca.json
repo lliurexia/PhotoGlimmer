@@ -56,7 +56,9 @@
     "invalid_file": "Arxiu invàlid",
     "not_an_image": "No és una imatge?",
     "quit": "Ix?",
-    "confirm_quit": "Estàs segur que vols ixir?"
+    "confirm_quit": "Estàs segur que vols ixir?",
+    "preview": "Previsualització",
+    "open_image_dialog": "PhotoGlimmer: Obri una imatge"
   },
   "messages": {
     "message_about": "Missatge sobre",
