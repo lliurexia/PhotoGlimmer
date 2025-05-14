@@ -525,10 +525,12 @@ class  Ui(QtWidgets.QMainWindow):
     def  _showSaveDialog(self):
         fname=None
         newfile= self.appendToFilePath( photoglimmer_backend.originalImgPath)
-        fileName, _ = QtWidgets.QFileDialog.getSaveFileName(
+        # Usar nuestro diálogo de guardar personalizado en lugar del estándar
+        from photoglimmer.customfiledialog import QFileSaveDialog
+        fileName, _ = QFileSaveDialog.getSaveFileName(
             self,
             caption=f"{appname}: {i18n.get('dialogs.save_image', 'Save File')}",
-            dir=newfile,  
+            directory=newfile,  
             filter=(i18n.get('dialogs.image_files', 'Image Files') + " (*.jpg, *.png)"))
         if fileName:
             _, ext = os.path.splitext(self.tempimage)
