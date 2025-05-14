@@ -2,7 +2,7 @@
   "app": {
     "title": "PhotoGlimmer: Il·lumina'm!",
     "open_image": "Obri una imatge per a editar",
-    "save_prompt": "Prem 'Guardar' quan hagis acabat d'editar la teva imatge"
+    "save_prompt": "Prem 'Guarda' quan hagis acabat d'editar la teva imatge"
   },
   "buttons": {
     "browse": "Explora",
@@ -16,7 +16,7 @@
     "denoise": "Eliminar soroll"
   },
   "tooltips": {
-    "browse": "Obre un fitxer d'imatge per a editar",
+    "browse": "Obri un fitxer d'imatge per a editar",
     "pp": "Processa tota la imatge",
     "denoise": "Elimina soroll de l'àrea seleccionada",
     "weightage": "Pes per a la imatge original",
@@ -29,7 +29,8 @@
     "bg": "Fons - aplica efectes al fons",
     "fg": "Primer pla - aplica efectes al primer pla",
     "segmenter": "Selecciona primer pla o fons per aplicar efectes",
-    "main_image": "No has obert cap imatge. Utilitza el botó Obri fitxer a la part superior esquerra."
+    "main_image": "No has obert cap imatge. Utilitza el botó Obri fitxer a la part superior esquerra.",
+    "save_button": "Guarda el fitxer editat. Pot tardar més temps que les previsualitzacions."
   },
   "menu": {
     "file": "Fitxer",

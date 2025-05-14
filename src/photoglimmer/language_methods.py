@@ -82,6 +82,10 @@ def update_texts(self):
         # Update main image tooltip
         if hasattr(self, 'labelImg'):
             self.labelImg.setToolTip(i18n.get('tooltips.main_image', 'You have not opened any image file. Use File Open button on top left.'))
+            
+        # Update save button tooltip
+        if hasattr(self, 'buttonSave'):
+            self.buttonSave.setToolTip(i18n.get('tooltips.save_button', 'Save edited file. It might take more time than previews.'))
         
         # Handle slider labels using a more robust approach
         frame_sliders = self.findChild(QtWidgets.QFrame, 'frameSliders')

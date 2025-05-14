@@ -29,7 +29,8 @@
     "bg": "Background - applies effects to background",
     "fg": "Foreground - applies effects to foreground",
     "segmenter": "Select foreground or background to apply effects",
-    "main_image": "You have not opened any image file. Use File Open button on top left."
+    "main_image": "You have not opened any image file. Use File Open button on top left.",
+    "save_button": "Save edited file. It might take more time than previews."
   },
   "labels": {
     "brightness": "Brightness",
