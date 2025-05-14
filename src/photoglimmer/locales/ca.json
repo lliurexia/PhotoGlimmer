@@ -2,7 +2,7 @@
   "app": {
     "title": "PhotoGlimmer: Il·lumina'm!",
     "open_image": "Obri una imatge per a editar",
-    "save_prompt": "Prem 'Guarda' quan hagis acabat d'editar la teva imatge"
+    "save_prompt": "Prem 'Guarda' quan hagis acabat d'editar la teua imatge"
   },
   "buttons": {
     "browse": "Explora",
@@ -36,7 +36,7 @@
     "file": "Fitxer",
     "open": "Obri",
     "save": "Guarda",
-    "quit": "IX",
+    "quit": "Ix",
     "help": "Ajuda",
     "about": "Quant a",
     "tools": "Eines",
@@ -55,8 +55,8 @@
     "error": "Error",
     "invalid_file": "Arxiu invàlid",
     "not_an_image": "No és una imatge?",
-    "quit": "Eixir?",
-    "confirm_quit": "Estàs segur que vols eixir?"
+    "quit": "Ix?",
+    "confirm_quit": "Estàs segur que vols ixir?"
   },
   "messages": {
     "message_about": "Missatge sobre",
