@@ -113,6 +113,11 @@ class  Ui(QtWidgets.QMainWindow):
         self.labelMask = self.findChild(QtWidgets.QLabel, 'label_maskimage')
         self.checkBoxDenoise= self.findChild(QtWidgets.QCheckBox, 'check_blur')
         self.checkBoxPP= self.findChild(QtWidgets.QCheckBox, 'check_pp')
+        
+        # Obtener las etiquetas para BG y FG
+        self.labelBG = self.findChild(QtWidgets.QLabel, 'label_fore')
+        self.labelFG = self.findChild(QtWidgets.QLabel, 'label_back')
+        
         self.sliderSegMode = self.findChild(QtWidgets.QAbstractSlider,
                                             'sliderModeToggle')
         self.slideThresh = self.findChild(QtWidgets.QAbstractSlider,

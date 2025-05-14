@@ -25,7 +25,10 @@
     "brightness": "Ajusta brillantor",
     "blur_edge": "Ajusta desenfocament de vores",
     "blend_weight": "Ajusta pes de la mescla",
-    "bg_blur": "Ajusta desenfocament del fons"
+    "bg_blur": "Ajusta desenfocament del fons",
+    "bg": "Fons - aplica efectes al fons",
+    "fg": "Primer pla - aplica efectes al primer pla",
+    "segmenter": "Selecciona primer pla o fons per aplicar efectes"
   },
   "menu": {
     "file": "Fitxer",

@@ -25,7 +25,10 @@
     "brightness": "Ajustar brillo",
     "blur_edge": "Ajustar desenfoque de bordes",
     "blend_weight": "Ajustar peso de la mezcla",
-    "bg_blur": "Ajustar desenfoque del fondo"
+    "bg_blur": "Ajustar desenfoque del fondo",
+    "bg": "Fondo - aplica efectos al fondo",
+    "fg": "Primer plano - aplica efectos al primer plano",
+    "segmenter": "Selecciona primer plano o fondo para aplicar efectos"
   },
   "menu": {
     "file": "Archivo",

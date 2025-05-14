@@ -25,7 +25,10 @@
     "brightness": "Adjust brightness level",
     "blur_edge": "Adjust edge blur intensity",
     "blend_weight": "Adjust blending weight",
-    "bg_blur": "Adjust background blur intensity"
+    "bg_blur": "Adjust background blur intensity",
+    "bg": "Background - applies effects to background",
+    "fg": "Foreground - applies effects to foreground",
+    "segmenter": "Select foreground or background to apply effects"
   },
   "labels": {
     "brightness": "Brightness",

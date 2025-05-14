@@ -71,7 +71,13 @@ def update_texts(self):
         self.slideBlurEdge.setToolTip(i18n.get('tooltips.blur_edge'))
         self.slideBelndwt1.setToolTip(i18n.get('tooltips.blend_weight'))
         self.slideBgBlur.setToolTip(i18n.get('tooltips.bg_blur'))
-        self.sliderSegMode.setToolTip(i18n.get('tooltips.threshold'))
+        self.sliderSegMode.setToolTip(i18n.get('tooltips.segmenter'))
+        
+        # Update BG and FG tooltips if the labels exist
+        if hasattr(self, 'labelBG'):
+            self.labelBG.setToolTip(i18n.get('tooltips.bg', 'Background - applies effects to background'))
+        if hasattr(self, 'labelFG'):
+            self.labelFG.setToolTip(i18n.get('tooltips.fg', 'Foreground - applies effects to foreground'))
         
         # Handle slider labels using a more robust approach
         frame_sliders = self.findChild(QtWidgets.QFrame, 'frameSliders')
