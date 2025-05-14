@@ -631,13 +631,19 @@ class  Ui(QtWidgets.QMainWindow):
         import  qdarktheme
         import tempfile
         import photoglimmer.locales.i18n as i18n
-
+        
+        global tempdir
         tempd = tempfile.TemporaryDirectory(prefix=f"{appname}_")
         tempdir = tempd
         photoglimmer_backend.tempdirpath = tempd.name
 
 
     def  createTempFile(self, fname, img,jpegqual=100):
+        global tempdir
+        if not tempdir or not hasattr(tempdir, 'name'):
+            # Re-create temp directory if it doesn't exist
+            self.createTempDir()
+            
         f = os.path.join(tempdir.name, fname)
         if (img.shape[-1]==4):
             f+=".png"
@@ -647,11 +653,13 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  emptyTempDir(self):
+        global tempdir
         try:
-            for fl in os.listdir(tempdir.name):
-                os.remove(f"{tempdir.name}/{fl}")
+            if tempdir and hasattr(tempdir, 'name'):
+                for fl in os.listdir(tempdir.name):
+                    os.remove(f"{tempdir.name}/{fl}")
         except Exception as err:
-            print(err)
+            print(f"Error emptying temp directory: {err}")
 
 
     def  setBackendVariables(self):
