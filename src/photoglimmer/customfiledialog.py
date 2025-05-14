@@ -5,9 +5,9 @@
 # File license CC BY-SA 3.0
 # ###############################################################################
 import sys
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QPixmap
-from PySide2.QtWidgets import QApplication, QFileDialog, QVBoxLayout, QLabel, QDialog, QPushButton
+from PySide2.QtWidgets import QApplication, QFileDialog, QVBoxLayout, QLabel, QDialog, QPushButton, QLineEdit
 import  qdarktheme
 from photoglimmer.locales import i18n
 
@@ -48,6 +48,17 @@ class  QFileDialogPreview(QFileDialog):
         
         # Translate additional dialog texts
         self.translateDialogTexts()
+        
+        # Connect to multiple signals to ensure translations are maintained
+        self.currentChanged.connect(self.updateButtonTranslations)
+        self.accepted.connect(self.updateButtonTranslations)
+        self.rejected.connect(self.updateButtonTranslations)
+        
+        # Set up a timer to periodically update button translations
+        # This ensures they stay translated regardless of Qt's internal state changes
+        self.translationTimer = QTimer(self)
+        self.translationTimer.timeout.connect(self.updateButtonTranslations)
+        self.translationTimer.start(500)  # Update every 500ms
 
 
     def  onChange(self, path):
@@ -76,20 +87,83 @@ class  QFileDialogPreview(QFileDialog):
     def translateDialogTexts(self):
         # Translate the labels and buttons in the dialog
         # Find widgets by their type and default text
+        print("Translating dialog texts...")
+        
+        # Translate labels
         for child in self.findChildren(QLabel):
-            if child.text() == 'Look in:':
+            text = child.text().strip()
+            print(f"Label found: '{text}'")
+            
+            # Check for different variations of the text
+            if text == 'Look in:' or text == 'Look in':
                 child.setText(i18n.get('dialogs.look_in', 'Look in:'))
-            elif child.text() == 'File name:':
+                print(f"  - Translated to: {i18n.get('dialogs.look_in', 'Look in:')}")
+            elif text == 'File name:' or text == 'File name' or text == 'Filename:':
                 child.setText(i18n.get('dialogs.file_name', 'File name:'))
-            elif child.text() == 'Files of type:':
+                print(f"  - Translated to: {i18n.get('dialogs.file_name', 'File name:')}")
+            elif text == 'Files of type:' or text == 'Files of type' or text == 'File type:':
                 child.setText(i18n.get('dialogs.files_of_type', 'Files of type:'))
-                
-        # Translate buttons
-        for button in self.findChildren(QPushButton):
-            if button.text() == 'Open':
-                button.setText(i18n.get('dialogs.open_button', 'Open'))
-            elif button.text() == 'Cancel':
-                button.setText(i18n.get('dialogs.cancel_button', 'Cancel'))
+                print(f"  - Translated to: {i18n.get('dialogs.files_of_type', 'Files of type:')}")
+        
+        # Translate all buttons using the common method
+        self.updateButtonTranslations()
+        
+        # Also try to find the file name line edit
+        for lineEdit in self.findChildren(QLineEdit):
+            if lineEdit.objectName() == 'fileNameEdit':
+                # Set placeholder text
+                lineEdit.setPlaceholderText(i18n.get('dialogs.file_name', 'File name'))
+                print(f"  - Found fileNameEdit - Set placeholder to: {i18n.get('dialogs.file_name', 'File name')}")
+    
+    def updateButtonTranslations(self, path=None):
+        # This method is called both during initialization and when the current path changes
+        # The path parameter is used when connected to the currentChanged signal
+        
+        # Get the translated button texts
+        open_text = i18n.get('dialogs.open_button', 'Open')
+        cancel_text = i18n.get('dialogs.cancel_button', 'Cancel')
+        
+        # First, try to find the standard dialog buttons
+        buttons = self.findChildren(QPushButton)
+        open_button = None
+        cancel_button = None
+        
+        # Find buttons by object name (most reliable method)
+        for button in buttons:
+            obj_name = button.objectName()
+            if 'open' in obj_name.lower():
+                open_button = button
+            elif 'cancel' in obj_name.lower():
+                cancel_button = button
+        
+        # If not found by object name, try by text
+        if not open_button:
+            for button in buttons:
+                if button.text().lower() in ['open', '&open']:
+                    open_button = button
+                    break
+        
+        if not cancel_button:
+            for button in buttons:
+                if button.text().lower() in ['cancel', '&cancel']:
+                    cancel_button = button
+                    break
+        
+        # Apply translations if buttons were found
+        if open_button:
+            open_button.setText(open_text)
+        
+        if cancel_button:
+            cancel_button.setText(cancel_text)
+        
+        # As a last resort, try to translate all buttons that might match
+        for button in buttons:
+            text = button.text().strip().lower()
+            if text in ['open', '&open']:
+                button.setText(open_text)
+            elif text in ['cancel', '&cancel']:
+                button.setText(cancel_text)
+
     
     @staticmethod
 
