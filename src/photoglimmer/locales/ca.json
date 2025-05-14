@@ -34,13 +34,13 @@
   },
   "menu": {
     "file": "Fitxer",
-    "open": "Obrir",
-    "save": "Guardar",
-    "quit": "Eixir",
+    "open": "Obri",
+    "save": "Guarda",
+    "quit": "IX",
     "help": "Ajuda",
     "about": "Quant a",
     "tools": "Eines",
-    "locate_on_disk": "Localitzar al disc",
+    "locate_on_disk": "Localitza al disc",
     "fg_to_clipboard": "FG al portapapers",
     "language": "Idioma"
   },
