@@ -643,11 +643,11 @@ class  Ui(QtWidgets.QMainWindow):
         tempdir = tempd
         photoglimmer_backend.tempdirpath = tempd.name
         
-        # Cambiar permisos del directorio temporal para hacerlo legible por todos
+        # Change permissions of the temporary directory to make it readable by all users
         try:
-            os.chmod(tempd.name, 0o755)  # rwxr-xr-x: permisos de lectura y ejecución para todos
+            os.chmod(tempd.name, 0o755)  # rwxr-xr-x: read and execute permissions for all users
         except Exception as e:
-            print(f"Error al cambiar permisos del directorio temporal: {e}")
+            print(f"Error changing temporary directory permissions: {e}")
 
 
     def  createTempFile(self, fname, img,jpegqual=100):
@@ -776,7 +776,7 @@ def  main():
     window = Ui()
     window.setAppStyleSheets() 
     app.exec_()
-    # Comprobar si tempdir existe antes de intentar limpiarlo
+    # Check if tempdir exists before attempting to clean it
     if tempdir is not None:
         tempdir.cleanup()
     sys.exit(0)

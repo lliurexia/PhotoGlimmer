@@ -1,4 +1,4 @@
-# Métodos para la gestión de idiomas en PhotoGlimmer
+# Methods for language management in PhotoGlimmer
 
 from PySide2.QtWidgets import QMenu, QAction
 import i18n
