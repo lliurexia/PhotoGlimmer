@@ -20,7 +20,7 @@ def setupLanguageMenu(self):
     language_names = {
         'en': 'English',
         'es': 'Spanish',
-        'ca': 'Catalan'
+        'ca': 'Catalan (Valencian)'
     }
     
     for lang in languages:
