@@ -1,5 +1,7 @@
-# PhotoGlimmer - Illuminating  People In Photos 
-#### ✨✨ The photo editor that makes you look as sharp as the landscape behind you (or the vice versa) ✨✨
+# PhotoGlimmer for LliureX - Illuminating People In Photos 
+#### ✨✨ The photo editor that makes you look as sharp as the landscape behind you (or vice versa) ✨✨
+
+> **Note**: This is a forked repository adapted specifically for LliureX.
 
 
 #### ✨✨ New Features In Version 0.3 ✨✨
@@ -23,7 +25,7 @@
 
 ## Installation Instructions
 
-### For Debian-based Linux distributions (Ubuntu, Debian, LliureX, etc.)
+### For Debian-based Linux distributions (Ubuntu, Debian, etc.)
 
 1. Download the .deb package
 2. Install using the following command:
@@ -121,32 +123,35 @@ So, if you are using the .deb or .AppImage version, you need to have only **Pyth
 
 
 ## Tested On:
-- LliureX 23 
-- LliureX 25
+- **LliureX 23** (fully compatible)
+- **LliureX 25** (fully compatible)
+- Other Linux distributions may also work with the AppImage
 
 
 
 # Installation and Running: 
 
-> [!NOTE]
-> Binary installers are at the top of this page (V0.3 Binaries)[https://github.com/codecliff/PhotoGlimmer/edit/0_3/README.md#-download-version-03-binaries-]
-> [All Binary Release Assets](https://github.com/codecliff/PhotoGlimmer/releases/). 
+> [!IMPORTANT]
+> **For LliureX users**: The AppImage installation method is recommended for LliureX systems.
 
-
-## Method 1. Appimage (Any Linux) Version 0.4:
+## Method 1. AppImage (Recommended for LliureX) Version 0.4:
 
 - [Download the AppImage file](https://drive.google.com/file/d/1YmcYbc7YArKZmGTlnjhA1dJ1WiW7j047/view?usp=drive_link)
-- Just download the Appimage file and execute. 
-- You don't need to install anything, appimages have everything and the kitchen sink bundled in.
+- Make the file executable: Right-click on the file → Properties → Permissions → Check 'Allow executing file as program' OR run `chmod +x PhotoGlimmer*.AppImage` in terminal
+- Double-click to run the application
+- You don't need to install anything else, AppImages contain all required dependencies
 
-## Method 2. Install .deb (Ubuntu) : 
+## Alternative Installation Methods
 
-- This method gives you the better integration with OS. You can just right-click on images and open them in PhotoGlimmer
-- All requirements are bundled in the installer itself. You don't need to install any requirements
-- Installing through this .deb file does not pollute your system environment.  Photoglimmer and all its required software is contained in its own bundle and do not interfere with versions of stuff already installed on the system 
+### Method 2. Install .deb (Ubuntu/Debian-based systems):
 
+> **Note**: For LliureX users, the AppImage method above is recommended instead.
 
-## Method 3. Executing from source code (All OSs including Windows) :
+- This method gives better integration with the OS. You can right-click on images and open them in PhotoGlimmer
+- All requirements are bundled in the installer itself
+- Installing through this .deb file does not pollute your system environment. PhotoGlimmer and all its required software is contained in its own bundle
+
+### Method 3. Executing from source code (Advanced users):
 
 Follow these steps to install dependencies and run PhotoGlimmer :
 
