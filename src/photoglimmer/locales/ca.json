@@ -1,0 +1,99 @@
+{
+  "app": {
+    "title": "PhotoGlimmer: Il·lumina'm!",
+    "open_image": "Obri una imatge per a editar",
+    "save_prompt": "Prem 'Guarda' quan hagis acabat d'editar la teua imatge"
+  },
+  "buttons": {
+    "browse": "Explora",
+    "save": "Guarda",
+    "reset": "Reset",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "checkboxes": {
+    "pp": "PP",
+    "denoise": "Eliminar soroll"
+  },
+  "tooltips": {
+    "browse": "Obri un fitxer d'imatge per a editar",
+    "pp": "Processa tota la imatge",
+    "denoise": "Elimina soroll de l'àrea seleccionada",
+    "weightage": "Pes per a la imatge original",
+    "threshold": "Ajusta llindar de detecció",
+    "saturation": "Ajusta saturació",
+    "brightness": "Ajusta brillantor",
+    "blur_edge": "Ajusta desenfocament de vores",
+    "blend_weight": "Ajusta pes de la mescla",
+    "bg_blur": "Ajusta desenfocament del fons",
+    "bg": "Fons - aplica efectes al fons",
+    "fg": "Primer pla - aplica efectes al primer pla",
+    "segmenter": "Selecciona primer pla o fons per aplicar efectes",
+    "main_image": "No has obert cap imatge. Utilitza el botó Obri fitxer a la part superior esquerra.",
+    "save_button": "Guarda el fitxer editat. Pot tardar més temps que les previsualitzacions."
+  },
+  "menu": {
+    "file": "Fitxer",
+    "open": "Obri",
+    "save": "Guarda",
+    "quit": "Ix",
+    "help": "Ajuda",
+    "about": "Quant a",
+    "tools": "Eines",
+    "locate_on_disk": "Localitza al disc",
+    "fg_to_clipboard": "FG al portapapers",
+    "language": "Idioma"
+  },
+  "dialogs": {
+    "open_image": "Obri una imatge",
+    "open_containing_folder": "Obri carpeta contenidora",
+    "save_transparent_png": "Guarda imatge PNG transparent només amb primer pla",
+    "confirm": "Confirma",
+    "really": "Realment?",
+    "save_image": "Guarda imatge",
+    "image_files": "Arxius d'imatge",
+    "error": "Error",
+    "invalid_file": "Arxiu invàlid",
+    "not_an_image": "No és una imatge?",
+    "quit": "Ix?",
+    "confirm_quit": "Estàs segur que vols eixir?",
+    "preview": "Previsualització",
+    "open_image_dialog": "PhotoGlimmer: Obri una imatge",
+    "look_in": "Busca en",
+    "file_name": "Nom del fitxer",
+    "files_of_type": "Fitxers de tipus",
+    "open_button": "Obri",
+    "cancel_button": "Cancel·la"
+  },
+  "messages": {
+    "message_about": "Missatge sobre",
+    "some_message_shown": "Algun missatge mostrat",
+    "no_mask": "Sense màscara",
+    "edit_first": "Edita alguna cosa primer",
+    "edit_and_try": "Edita la imatge una mica i torna-ho a provar",
+    "nothing_edited": "Res editat encara!",
+    "unedited": "Sense editar",
+    "nothing_to_save": "Res per guardar!",
+    "error_saving": "Error en guardar l'arxiu",
+    "file_saved": "Arxiu guardat",
+    "saved_file": "Guardat {}",
+    "fg_copied": "Primer pla copiat al portapapers",
+    "paste_to_editor": "Enganxa-ho al teu editor d'imatges preferit",
+    "no_image_opened": "No has obert cap imatge!"
+  },
+  "labels": {
+    "threshold": "Llindar",
+    "saturation": "Saturació",
+    "brightness": "Brillantor",
+    "blur_edge": "Desenfocament de vores",
+    "blend_weight": "Pes de mescla",
+    "bg_blur": "Desenfocament de fons",
+    "segmentation_mode": "Mode de segmentació"
+  },
+  "status": {
+    "processing": "Processant imatge...",
+    "ready": "Llest",
+    "drag_drop": "Arrossega i deixa anar una imatge aquí",
+    "saved": "Imatge guardada a: {0}"
+  }
+}

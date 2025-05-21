@@ -17,7 +17,7 @@ from PySide2 import QtWidgets,  QtCore
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QPixmap, QIcon, QMovie, QKeySequence
 from PySide2.QtCore import QThreadPool, QFile
-from PySide2.QtWidgets import QStyle, QMessageBox, QAction, QGridLayout,QLabel
+from PySide2.QtWidgets import QStyle, QMessageBox, QAction, QGridLayout, QLabel, QMenu
 # Only if using qdarktheme style
 import  qdarktheme
 # This application
@@ -25,6 +25,8 @@ import photoglimmer.photoglimmer_backend as photoglimmer_backend
 from photoglimmer.threadwork import *
 import photoglimmer.customfiledialog as customfiledialog
 import photoglimmer.uihelper_transparency 
+import photoglimmer.locales.i18n as i18n
+from photoglimmer.language_methods import setup_language_menu, change_language, update_texts, update_menu_texts
 import cv2
 #/**   START Patch FOR cv2+qt plugin **/
 # https://forum.qt.io/post/654289
@@ -46,13 +48,25 @@ tempdir = None
 tempImage_original = "tmp_original.jpg"
 preferSystemFileDlg= False 
 
+# Initialize the localization system
+i18n.init()
+
 
 class  Ui(QtWidgets.QMainWindow):
+    # Add language management methods
+    setupLanguageMenu = setup_language_menu
+    change_language = change_language  # Use the same name as in language_methods.py
+    updateTexts = update_texts
+    updateMenuTexts = update_menu_texts
     tempimage = photoglimmer_backend.fname_resultimg
 
 
     def  __init__(self):
         super(Ui, self).__init__()
+        
+        # Initialize the translation system
+        i18n.init()
+        
         self.loader = QUiLoader()
         uifile= QFile(self.getAbsolutePathForFile("./photoglimmer_qt.ui"))
         self.window= self.loader.load(uifile)
@@ -67,10 +81,16 @@ class  Ui(QtWidgets.QMainWindow):
         self.createTempDir()
         photoglimmer_backend.initializeImageObjects() 
         self.thread_pool = QThreadPool()
-        self.setWindowTitle(f"{appname}: Illuminate Me! ")
+        
+        # Configure language menu
+        self.setupLanguageMenu()
+        
+        # Apply translations to the interface
+        self.updateTexts()
+        
         self.showMaximized()
         self.disableSliders()
-        self.setStatus(f"Open an image to edit.")
+        self.setStatus(i18n.get('app.open_image'))
         if len(sys.argv) > 1:
             arg_img = sys.argv[-1]
             if (os.path.exists(arg_img) and  self.isImageURL(arg_img )) :
@@ -93,6 +113,11 @@ class  Ui(QtWidgets.QMainWindow):
         self.labelMask = self.findChild(QtWidgets.QLabel, 'label_maskimage')
         self.checkBoxDenoise= self.findChild(QtWidgets.QCheckBox, 'check_blur')
         self.checkBoxPP= self.findChild(QtWidgets.QCheckBox, 'check_pp')
+        
+        # Get labels for BG and FG
+        self.labelBG = self.findChild(QtWidgets.QLabel, 'label_fore')
+        self.labelFG = self.findChild(QtWidgets.QLabel, 'label_back')
+        
         self.sliderSegMode = self.findChild(QtWidgets.QAbstractSlider,
                                             'sliderModeToggle')
         self.slideThresh = self.findChild(QtWidgets.QAbstractSlider,
@@ -176,6 +201,9 @@ class  Ui(QtWidgets.QMainWindow):
         self.menuParFolder.triggered.connect(self.openSystemExplorer)
         self.menuAbout.triggered.connect(self.openHelpURL) 
         self.menuTranspExp.triggered.connect(self.exportTransparency)
+        
+        # Actualizar textos de menú
+        self.updateMenuTexts()
 
 
     def  dragEnterEvent(self, event):
@@ -209,25 +237,34 @@ class  Ui(QtWidgets.QMainWindow):
         self.statusBar.showMessage(msg)
 
 
-    def  showMessage(self, title="", text="Message About" ,
-                    message="Some message shown"):
+    def  showMessage(self, title="", text=None ,
+                    message=None):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Information)
-        msg.setText(text)
-        msg.setInformativeText(message)
+        msg.setText(text if text else i18n.get('messages.message_about'))
+        msg.setInformativeText(message if message else i18n.get('messages.some_message_shown'))
         title=f"{appname}: {title} "
         msg.setWindowTitle(title)
         msg.exec_()
 
 
-    def  showConfirmationBox(self, titl="Confirm", questn="really?"):
-        reply = QMessageBox.question(self,
-                                     titl,
-                                     questn,
-                                      QMessageBox.Yes | QMessageBox.No,
-                                      QMessageBox.No)
-        result= False
-        result= True if reply == QMessageBox.Yes else False
+    def  showConfirmationBox(self, titl=None, questn=None):
+        # Create a custom message box to use localized button texts
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setWindowTitle(titl if titl else i18n.get('dialogs.confirm'))
+        msg_box.setText(questn if questn else i18n.get('dialogs.really'))
+        
+        # Add localized Yes and No buttons
+        yes_button = msg_box.addButton(i18n.get('buttons.yes'), QMessageBox.YesRole)
+        no_button = msg_box.addButton(i18n.get('buttons.no'), QMessageBox.NoRole)
+        msg_box.setDefaultButton(no_button)
+        
+        # Show the dialog and get the result
+        msg_box.exec_()
+        
+        # Check which button was clicked
+        result = msg_box.clickedButton() == yes_button
         return result
 
 
@@ -368,7 +405,7 @@ class  Ui(QtWidgets.QMainWindow):
         self.pixmap = QPixmap(fname)
         myScaledPixmap = self.pixmap
         self.labelImg.setPixmap(myScaledPixmap)
-        self.setStatus("Press 'Save' when you have finished editing your image")
+        self.setStatus(i18n.get('app.save_prompt'))
         if (fname is not self.tempimage):
             self.labelImg.setProperty("toolTip",
                                       photoglimmer_backend.originalImgPath)
@@ -416,20 +453,24 @@ class  Ui(QtWidgets.QMainWindow):
         if preferSystemFileDlg :
             fname = QtWidgets.QFileDialog.getOpenFileName(
             self,
-            caption=f"{appname}: open image file",
+            caption=f"{appname}: {i18n.get('dialogs.open_image', 'Open image file')}",
             dir= homedir,
-            filter=("Image Files (*.png *.jpg *.bmp *.webp *.JPG *.jpeg *.JPEG )"))
+            filter=(i18n.get('dialogs.image_files', 'Image Files') + " (*.png *.jpg *.bmp *.webp *.JPG *.jpeg *.JPEG )"))
         else:
             fname = customfiledialog.QFileDialogPreview.getOpenFileName(parent=self,dir= homedir )
         if (fname[0] == ''):
             return
         if not self.isImageURL(  fname[0] ):
-            self.showMessage(title="Error!", text="Invalid file",message=f"Not an image?: {fname[0]}  ")
+            self.showMessage(title=i18n.get('dialogs.error', 'Error!'), 
+                          text=i18n.get('dialogs.invalid_file', 'Invalid file'),
+                          message=f"{i18n.get('dialogs.not_an_image', 'Not an image?')}: {fname[0]}  ")
             return
         try:
             self.openNewImage(fname[0])
         except Exception as e:
-            self.showMessage("Error", "Not an image?", type(e).__name__)
+            self.showMessage(i18n.get('dialogs.error', 'Error'), 
+                          i18n.get('dialogs.not_an_image', 'Not an image?'), 
+                          type(e).__name__)
 
 
     def  openNewImage(self, imgpath):
@@ -449,23 +490,22 @@ class  Ui(QtWidgets.QMainWindow):
         self.labelMask.clear()        
         self.showImage(photoglimmer_backend.resultImgPath)
         self.enableSliders()
-        self.setStatus(f"Edit using sliders. Press Save when done.")
+        self.setStatus(i18n.get('app.save_prompt'))
 
 
     def  goReset(self):
         photoglimmer_backend.resetBackend()
         self.openNewImage(photoglimmer_backend.originalImgPath)
-        self.restoreUIValuesToLayer( photoglimmer_backend.currImg)
 
 
     def  goSave(self):
         if (not self.is_state_dirty):
-            self.showMessage(message="Nothing Edited Yet!",
-                             text="Unedited",
-                             title="Nothing To Save!")
+            self.showMessage(message=i18n.get('messages.nothing_edited', 'Nothing Edited Yet!'),
+                              text=i18n.get('messages.unedited', 'Unedited'),
+                              title=i18n.get('messages.nothing_to_save', 'Nothing To Save!'))
             return
         self.disableSliders()
-        self.setStatus("Saving image..this takes longer than normal edit")
+        self.setStatus(i18n.get('status.processing'))
         self.startBusySpinner()
         photoglimmer_backend.backupScaledImages()
         worker = Worker(self._goSave_bgstuff)
@@ -485,11 +525,13 @@ class  Ui(QtWidgets.QMainWindow):
     def  _showSaveDialog(self):
         fname=None
         newfile= self.appendToFilePath( photoglimmer_backend.originalImgPath)
-        fileName, _ = QtWidgets.QFileDialog.getSaveFileName(
+        # Use our custom save dialog instead of the standard one
+        from photoglimmer.customfiledialog import QFileSaveDialog
+        fileName, _ = QFileSaveDialog.getSaveFileName(
             self,
-            caption=f"{appname}: Save File",
-            dir=newfile,  
-            filter=("Image Files (*.jpg, *.png)")) 
+            caption=f"{appname}: {i18n.get('dialogs.save_image', 'Save File')}",
+            directory=newfile,  
+            filter=(i18n.get('dialogs.image_files', 'Image Files') + " (*.jpg, *.png)"))
         if fileName:
             _, ext = os.path.splitext(self.tempimage)
             print( f"going to save {self.tempimage} , extension {ext}")
@@ -503,16 +545,16 @@ class  Ui(QtWidgets.QMainWindow):
                     shutil.copy(self.tempimage, fname)
                 except Exception as e:
                     print(f"An error occurred: {e}")
-                    self.showMessage(  title= "Error!",
-                                     text="Error saving file",
-                                     message=e)
+                    self.showMessage(  title=i18n.get('dialogs.error', 'Error!'),
+                                      text=i18n.get('messages.error_saving', 'Error saving file'),
+                                      message=e)
         else:
             pass   
         self.stopBusySpinner()
         if(fname is not None):
             photoglimmer_backend.transferAlteredExif( photoglimmer_backend.originalImgPath,
                                                             fname )
-            self.showMessage( text="File Saved",  message=f"Saved {fname}" )
+            self.showMessage( text=i18n.get('messages.file_saved', 'File Saved'),  message=i18n.get('messages.saved_file', 'Saved {}').format(fname) )
         self.enableSliders()
         photoglimmer_backend.RestoreScaledImages() 
         self.tempimage=photoglimmer_backend.resultImgPath 
@@ -521,8 +563,8 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  closeEvent(self, event):
-        res= self.showConfirmationBox(titl="Quit?",
-                                      questn="Are you sure you want to quit?")
+        res= self.showConfirmationBox(titl=i18n.get('dialogs.quit', 'Quit?'),
+                                      questn=i18n.get('dialogs.confirm_quit', 'Are you sure you want to quit?'))
         if not res:
             event.ignore()
         else:
@@ -551,7 +593,7 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  openHelpURL(self):
-        helpurl= "https://github.com/codecliff/PhotoGlimmer"
+        helpurl= "https://github.com/lliurexia/PhotoGlimmer"
         self.openBrowser(helpurl)
 
 
@@ -593,27 +635,122 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  createTempDir(self):
+        import  qdarktheme
+        import tempfile
+        import photoglimmer.locales.i18n as i18n
+        import os
+        import shutil
+        
+        global tempdir, tempImage_original
+        
+        try:
+            # Check if temp directory exists and is accessible
+            if tempdir and hasattr(tempdir, 'name') and os.path.exists(tempdir.name):
+                # Temp directory exists, just return it
+                return tempdir.name
+                
+            # Create a new temporary directory
+            tempd = tempfile.TemporaryDirectory(prefix=f"{appname}_")
+            tempdir = tempd
+            photoglimmer_backend.tempdirpath = tempd.name
+            print(f"Created temporary directory: {tempdir.name}")
+            
+            # Change permissions of the temporary directory to make it readable by all users
+            try:
+                os.chmod(tempd.name, 0o755)  # rwxr-xr-x: read and execute permissions for all users
+            except Exception as e:
+                print(f"Error changing temporary directory permissions: {e}")
+                
+            return tempdir.name
+            
+        except Exception as e:
+            print(f"Error creating temporary directory: {e}")
+            
+            # Fallback: create a directory in user's home folder if system temp fails
+            fallback_dir = os.path.join(os.path.expanduser("~"), ".photoglimmer_temp")
+            try:
+                os.makedirs(fallback_dir, exist_ok=True)
+                print(f"Using fallback directory: {fallback_dir}")
+                photoglimmer_backend.tempdirpath = fallback_dir
+                return fallback_dir
+            except Exception as e2:
+                print(f"Critical error - even fallback directory failed: {e2}")
+                return None
+
+
+    def  createTempFile(self, fname, img, jpegqual=100):
         global tempdir
-        tempd = tempfile.TemporaryDirectory(prefix=f"{appname}_")
-        tempdir = tempd
-        photoglimmer_backend.tempdirpath = tempd.name
-
-
-    def  createTempFile(self, fname, img,jpegqual=100):
-        f = os.path.join(tempdir.name, fname)
-        if (img.shape[-1]==4):
-            f+=".png"
-        photoglimmer_backend.cv2.imwrite(img=img, filename=f, 
-                                         params=[cv2.IMWRITE_JPEG_QUALITY, jpegqual] )
-        return f
+        
+        try:
+            # Make sure we have a valid temporary directory
+            temp_path = None
+            
+            # Check if tempdir exists and is valid
+            if tempdir and hasattr(tempdir, 'name') and os.path.exists(tempdir.name):
+                temp_path = tempdir.name
+            else:
+                # Re-create temp directory if it doesn't exist or is invalid
+                temp_path = self.createTempDir()
+                
+            if not temp_path:
+                # Critical error: couldn't create temp directory
+                self.showMessage(
+                    i18n.get('dialogs.error', 'Error'),
+                    i18n.get('messages.error_temp_dir', 'Error creating temporary directory')
+                )
+                return None
+                
+            # Create the temporary file path
+            f = os.path.join(temp_path, fname)
+            
+            # Add extension if needed
+            if (img.shape[-1]==4):
+                f += ".png"
+                
+            # Write the image to the temporary file
+            photoglimmer_backend.cv2.imwrite(
+                img=img, 
+                filename=f, 
+                params=[cv2.IMWRITE_JPEG_QUALITY, jpegqual]
+            )
+            
+            return f
+            
+        except Exception as e:
+            print(f"Error creating temporary file {fname}: {e}")
+            self.showMessage(
+                i18n.get('dialogs.error', 'Error'),
+                i18n.get('messages.error_temp_file', 'Error creating temporary file')
+            )
+            return None
 
 
     def  emptyTempDir(self):
+        global tempdir
+        
         try:
+            # Check if tempdir is valid
+            if not tempdir or not hasattr(tempdir, 'name') or not os.path.exists(tempdir.name):
+                print("Temporary directory doesn't exist or is invalid.")
+                return False
+                
+            # Remove all files from the temporary directory
+            deleted_count = 0
             for fl in os.listdir(tempdir.name):
-                os.remove(f"{tempdir.name}/{fl}")
+                try:
+                    file_path = os.path.join(tempdir.name, fl)
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                        deleted_count += 1
+                except Exception as file_err:
+                    print(f"Error removing temporary file {fl}: {file_err}")
+                    
+            print(f"Emptied temporary directory: {deleted_count} files removed")
+            return True
+            
         except Exception as err:
-            print(err)
+            print(f"Error emptying temporary directory: {err}")
+            return False
 
 
     def  setBackendVariables(self):
@@ -654,7 +791,7 @@ class  Ui(QtWidgets.QMainWindow):
 
     def  exportTransparency( self):
         self.old_status= self.statusBar.currentMessage()
-        self.setStatus("Copying Foreground , Wait! ")
+        self.setStatus(i18n.get('status.processing'))
         worker2 = Worker(self._transparencyToClipboard)
         worker2.signals.finished.connect(self._displayTransparencyCompleted)
         self.thread_pool.start(worker2)        
@@ -668,8 +805,8 @@ class  Ui(QtWidgets.QMainWindow):
 
 
     def  _displayTransparencyCompleted(self, progress_callback=None):
-        self.showMessage( "Foreground Copied To Clipboard", 
-                            "Paste it to your favourite image Editor")
+        self.showMessage( i18n.get('messages.fg_copied', 'Foreground Copied To Clipboard'), 
+                            i18n.get('messages.paste_to_editor', 'Paste it to your favourite image Editor'))
         self.setStatus(self.old_status)
         self.old_status=""
 
@@ -678,7 +815,9 @@ class  Ui(QtWidgets.QMainWindow):
         self.disableSliders()
         if (photoglimmer_backend.scaledImgpath == None
                 or not os.path.exists(photoglimmer_backend.scaledImgpath)):
-            self.showMessage("Error!","Empty", "You haven't Opened any Image! ")
+            self.showMessage(i18n.get('dialogs.error', 'Error!'),
+                          i18n.get('messages.unedited', 'Empty'), 
+                          i18n.get('messages.no_image_opened', 'You haven\'t Opened any Image!'))
             return
         worker2 = Worker(self._processImage_bgstuff)
         worker2.signals.finished.connect(self._endImageProcessing)
@@ -708,16 +847,149 @@ class  Ui(QtWidgets.QMainWindow):
 def  main():
     global app,tempdir
     if len(sys.argv)>1 and str.strip(sys.argv[1]) in ["-v","--version" ]:
-        print(f"PhotoGlimmer Version 0.3.0")
+        print(f"PhotoGlimmer Version 0.4.0")
         sys.exit(0)
     app = QtWidgets.QApplication(sys.argv)
-    qdarktheme.setup_theme("dark")
-    qdarktheme.setup_theme(custom_colors={"primary":"#ABCDEF" ,
-                                              "foreground>slider.disabledBackground":"#535c66"}) 
+    app.setStyle("Fusion")
+    # Handle different versions of qdarktheme
+    try:
+        # Try newer API first
+        qdarktheme.setup_theme("dark")
+    except AttributeError:
+        # Fall back to older API if available
+        try:
+            qdarktheme.load_stylesheet("dark")
+        except AttributeError:
+            # If all else fails, just apply the style directly to the application
+            try:
+                app.setStyleSheet(qdarktheme.load_stylesheet())
+            except:
+                print("Warning: Could not apply dark theme. Continuing with default theme.")
     window = Ui()
     window.setAppStyleSheets() 
     app.exec_()
-    tempdir.cleanup()
+    # Check if tempdir exists before attempting to clean it
+    if tempdir is not None:
+        tempdir.cleanup()
     sys.exit(0)
+
+
+# Methods for language management
+
+
+def changeLanguage(self):
+    """Changes the application language"""
+    action = self.sender()
+    if action:
+        lang_code = action.data()
+        result = i18n.set_language(lang_code)
+        if result:
+            # Update UI texts immediately
+            self.updateTexts()
+
+
+def updateTexts(self):
+    """Updates all UI texts with the current language"""
+    try:
+        # Get current language
+        current_lang = i18n.get_current_language()
+        
+        # Update window title
+        title_text = f"{appname}: {i18n.get('app.title')}"
+        self.setWindowTitle(title_text)
+        
+        # Update button texts
+        save_text = i18n.get('buttons.save')
+        reset_text = i18n.get('buttons.reset')
+        self.buttonBrowse.setToolTip(i18n.get('tooltips.browse'))
+        self.buttonSave.setText(save_text)
+        self.buttonReset.setText(reset_text)
+        
+        # Update checkbox texts
+        pp_text = i18n.get('checkboxes.pp')
+        denoise_text = i18n.get('checkboxes.denoise')
+        self.checkBoxPP.setText(pp_text)
+        self.checkBoxPP.setToolTip(i18n.get('tooltips.pp'))
+        self.checkBoxDenoise.setText(denoise_text)
+        self.checkBoxDenoise.setToolTip(i18n.get('tooltips.denoise'))
+        
+        # Update slider tooltips
+        self.slideThresh.setToolTip(i18n.get('tooltips.threshold'))
+        self.slideSaturat.setToolTip(i18n.get('tooltips.saturation'))
+        self.slideBrightness.setToolTip(i18n.get('tooltips.brightness'))
+        self.slideBlurEdge.setToolTip(i18n.get('tooltips.blur_edge'))
+        self.slideBelndwt1.setToolTip(i18n.get('tooltips.blend_weight'))
+        self.slideBgBlur.setToolTip(i18n.get('tooltips.bg_blur'))
+        self.sliderSegMode.setToolTip(i18n.get('tooltips.threshold'))
+        
+        # Update all labels in the interface
+        # Mapping of English texts to translation keys
+        label_text_mapping = {
+            "Brightness": "labels.brightness",
+            "Saturation": "labels.saturation",
+            "Preserve": "labels.blend_weight",
+            "Threshold": "labels.threshold",
+            "Edge Blur": "labels.blur_edge",
+            "Bg Blur": "labels.bg_blur",
+            "PP": "checkboxes.pp",
+            "Denoise": "checkboxes.denoise"
+        }
+        
+        # Find all labels in the interface
+        all_labels = self.window.findChildren(QtWidgets.QLabel)
+        
+        # Update each label if its current text is in the mapping
+        for label in all_labels:
+            current_text = label.text()
+            if current_text in label_text_mapping:
+                translation_key = label_text_mapping[current_text]
+                translated_text = i18n.get(translation_key)
+                label.setText(translated_text)
+        
+        # Update all buttons in the interface
+        all_buttons = self.window.findChildren(QtWidgets.QPushButton)
+        
+        # Update menu texts
+        self.updateMenuTexts()
+    except Exception as e:
+        print(f"Error updating texts: {e}")
+    
+
+
+def updateMenuTexts(self):
+    """Updates the menu texts"""
+    # Update menu texts
+    menuFile = self.findChild(QMenu, "menuFile")
+    menuHelp = self.findChild(QMenu, "menuHelp")
+    menuTools = self.findChild(QMenu, "menuTools")
+    
+    if menuFile:
+        menuFile.setTitle(i18n.get('menu.file'))
+    if menuHelp:
+        menuHelp.setTitle(i18n.get('menu.help'))
+    if menuTools:
+        menuTools.setTitle(i18n.get('menu.tools'))
+    
+    # Actualizar textos de las acciones de menú
+    if self.menuOpen:
+        self.menuOpen.setText(i18n.get('menu.open'))
+        self.menuOpen.setToolTip(i18n.get('dialogs.open_image'))
+    if self.menuSave:
+        self.menuSave.setText(i18n.get('menu.save'))
+    if self.menuQuit:
+        self.menuQuit.setText(i18n.get('menu.quit'))
+    if self.menuAbout:
+        self.menuAbout.setText(i18n.get('menu.about'))
+    if self.menuParFolder:
+        self.menuParFolder.setText(i18n.get('menu.locate_on_disk'))
+        self.menuParFolder.setToolTip(i18n.get('dialogs.open_containing_folder'))
+    if self.menuTranspExp:
+        self.menuTranspExp.setText(i18n.get('menu.fg_to_clipboard'))
+        self.menuTranspExp.setToolTip(i18n.get('dialogs.save_transparent_png'))
+
+
+# Add new methods to the Ui class
+
+
 if __name__ == '__main__':
     main()

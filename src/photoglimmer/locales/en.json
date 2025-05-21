@@ -1,0 +1,92 @@
+{
+  "app": {
+    "title": "PhotoGlimmer: Illuminate Me!",
+    "open_image": "Open an image to edit",
+    "save_prompt": "Press 'Save' when you have finished editing your image"
+  },
+  "buttons": {
+    "browse": "Browse",
+    "save": "Save",
+    "reset": "Reset",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "checkboxes": {
+    "pp": "PP",
+    "denoise": "Denoise"
+  },
+  "tooltips": {
+    "browse": "Open an image file to edit",
+    "pp": "PostProcess whole image",
+    "denoise": "Denoise selected area",
+    "weightage": "Weightage for original image",
+    "threshold": "Adjust threshold value",
+    "saturation": "Adjust saturation level",
+    "brightness": "Adjust brightness level",
+    "blur_edge": "Adjust edge blur intensity",
+    "blend_weight": "Adjust blending weight",
+    "bg_blur": "Adjust background blur intensity",
+    "bg": "Background - applies effects to background",
+    "fg": "Foreground - applies effects to foreground",
+    "segmenter": "Select foreground or background to apply effects",
+    "main_image": "You have not opened any image file. Use File Open button on top left.",
+    "save_button": "Save edited file. It might take more time than previews."
+  },
+  "labels": {
+    "brightness": "Brightness",
+    "saturation": "Saturation",
+    "blend_weight": "Preserve",
+    "threshold": "Threshold",
+    "blur_edge": "Edge Blur",
+    "bg_blur": "Bg Blur"
+  },
+  "menu": {
+    "file": "File",
+    "open": "Open",
+    "save": "Save",
+    "quit": "Quit",
+    "help": "Help",
+    "about": "About",
+    "tools": "Tools",
+    "locate_on_disk": "Locate On Disk",
+    "fg_to_clipboard": "FG to Clipboard",
+    "language": "Language"
+  },
+  "dialogs": {
+    "open_image": "Open an image",
+    "open_containing_folder": "Open containing folder",
+    "save_transparent_png": "Save transparent PNG image with foreground only",
+    "confirm": "Confirm",
+    "really": "Really?",
+    "save_image": "Save image",
+    "image_files": "Image files",
+    "error": "Error",
+    "invalid_file": "Invalid file",
+    "not_an_image": "Not an image?",
+    "quit": "Quit?",
+    "confirm_quit": "Are you sure you want to quit?",
+    "preview": "Preview",
+    "open_image_dialog": "PhotoGlimmer: Open an Image",
+    "look_in": "Look in",
+    "file_name": "File name",
+    "files_of_type": "Files of type",
+    "open_button": "Open",
+    "cancel_button": "Cancel"
+  },
+  "messages": {
+    "message_about": "Message About",
+    "some_message_shown": "Some message shown",
+    "no_mask": "No Mask",
+    "edit_first": "Edit something first",
+    "edit_and_try": "Edit image a bit and try again",
+    "nothing_edited": "Nothing Edited Yet!",
+    "unedited": "Unedited",
+    "nothing_to_save": "Nothing To Save!",
+    "error_saving": "Error saving file",
+    "file_saved": "File Saved",
+    "saved_file": "Saved {}",
+    "fg_copied": "Foreground Copied To Clipboard",
+    "paste_to_editor": "Paste it to your favourite image Editor",
+    "no_image_opened": "You haven't Opened any Image!"
+  }
+}

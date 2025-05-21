@@ -58,5 +58,14 @@ def  blendImages( img1_bgr ,img2_bgr , blendweight_img1=0.5 ):
 
 def  createTrasnparentImage(imgbgr, blurredmaskbgr):
     bgra = cv2.cvtColor(imgbgr, cv2.COLOR_BGR2BGRA)
-    bgra[:, :, 3] = blurredmaskbgr[:,:,-1]    
+    # Make sure the mask is a single channel (grayscale)
+    if len(blurredmaskbgr.shape) > 2 and blurredmaskbgr.shape[2] == 3:
+        # If the mask is BGR, convert it to grayscale
+        mask_gray = cv2.cvtColor(blurredmaskbgr, cv2.COLOR_BGR2GRAY)
+    else:
+        # If it's already single channel, use it directly
+        mask_gray = blurredmaskbgr if len(blurredmaskbgr.shape) == 2 else blurredmaskbgr[:,:,0]
+    
+    # Assign the mask to the alpha channel
+    bgra[:, :, 3] = mask_gray
     return bgra

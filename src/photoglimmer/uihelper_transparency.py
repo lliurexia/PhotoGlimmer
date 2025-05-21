@@ -2,6 +2,7 @@
 # import backend
 import os
 import photoglimmer.photoglimmer_backend as backend
+from photoglimmer.locales import i18n
 # all backend variable set by frontend have to be provided as funciton parameters 
 
 
@@ -29,8 +30,9 @@ class  UIHelper:
             mskpath=os.path.join(tempdirpath,
                                         backend.fname_maskImgBlurred)
             if not os.path.exists( mskpath ):
-                self.ui.showMessage(  title="No Mask", message= "Edit image a bit and try again" , 
-                                text="Edit something first")
+                self.ui.showMessage(  title=i18n.get('messages.no_mask', 'No Mask'), 
+                                message=i18n.get('messages.edit_and_try', 'Edit image a bit and try again'), 
+                                text=i18n.get('messages.edit_first', 'Edit something first'))
                 return
             img= backend.cv2.imread(originalImgPath)
             msk= backend.cv2.imread(mskpath)    

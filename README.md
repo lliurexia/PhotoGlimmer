@@ -10,22 +10,27 @@
         * Copy Foreground to clipboard  
 
 
-
-#### ✨✨ Download Version 0.3 Binaries ✨✨         
-
-- **Linux Appimage:** Download, make executable and run
-    * [Appimage for All Linux flavors](https://github.com/codecliff/PhotoGlimmer/releases/download/v0.3.0_u22.04py3.10/PhotoGlimmer-0.3.0-x86_64.AppImage)
-- **Ubuntu .deb Installer**: Download and install using apt or gdebi
-    * [Python 3.8/Ubuntu 20.04](https://github.com/codecliff/PhotoGlimmer/releases/download/v0.3.0_linux/photoglimmer_0.3.0-1.ubuntu-focal_amd64.deb)
-    * [Python 3.10/Ubuntu 22.04](https://github.com/codecliff/PhotoGlimmer/releases/download/v0.3.0_u22.04py3.10/photoglimmer_0.3.0-1.ubuntu-jammy_amd64.deb)
-- **Windows Installer:** Download and install, tested on Windows11 
-    * [Msi Installer](https://github.com/codecliff/PhotoGlimmer/releases/download/v0.3.0/PhotoGlimmer-0.3.0.msi)
-
-  All releases can be found onthe [release page](https://github.com/codecliff/PhotoGlimmer/releases) ( expand the Asset sections ) 
+#### ✨✨ New Features In Version 0.4 ✨✨
+        * Localization support in multiple languages:
+            * English
+            * Spanish
+            * Catalan (Valencian)
+        * Dynamic language switching in the user interface
+        * Localized file dialogs and system messages
+        * Improved tooltips for foreground/background controls
+        * Enhanced temporary directory handling
 
 
-  
+## Installation Instructions
 
+### For Debian-based Linux distributions (Ubuntu, Debian, LliureX, etc.)
+
+1. Download the .deb package
+2. Install using the following command:
+   ```bash
+   sudo dpkg -i photoglimmer_0.4.0.deb
+   ```
+3. Once installed, you can launch PhotoGlimmer from your applications menu or by typing `photoglimmer` in the terminal
 
 
 # About PhotoGlimmer
@@ -67,18 +72,18 @@ Beware- Unlike a phone app, PhotoGlimmer gives you full control of the segmentat
 
 - **No need of manual masking** 
 
-- ** Foreground/People/Face Lighting**: 
+- **Foreground/People/Face Lighting**: 
 
-- ** Background Illumination/Darkening  **
+- **Background Illumination/Darkening**
 
-- ** Background Defocus (Blur)  ** 
+- **Background Defocus (Blur)** 
 
-- **Seamless toggle between background and foreground **
+- **Seamless toggle between background and foreground**
 
 
 - **Background Preservation**: Say goodbye to painstaking masking and cropping. A few nudges at the sliders ensure that your enhanced foreground blend seamlessly with the original background.
 
-- **Lean and Intuitive Interface - just some sliders **:  
+- **Lean and Intuitive Interface - just some sliders**:  
 
 - **GPU Not Required**:  
 
@@ -116,9 +121,8 @@ So, if you are using the .deb or .AppImage version, you need to have only **Pyth
 
 
 ## Tested On:
-- Ubuntu 20.04,22.04 
-- Fedora Linux 35 (VM, 4 GB RAM)
-- Windows11
+- LliureX 23 
+- LliureX 25
 
 
 
@@ -129,8 +133,9 @@ So, if you are using the .deb or .AppImage version, you need to have only **Pyth
 > [All Binary Release Assets](https://github.com/codecliff/PhotoGlimmer/releases/). 
 
 
-## Method 1. Appimage (Any Linux):
+## Method 1. Appimage (Any Linux) Version 0.4:
 
+- [Download the AppImage file](https://drive.google.com/file/d/1YmcYbc7YArKZmGTlnjhA1dJ1WiW7j047/view?usp=drive_link)
 - Just download the Appimage file and execute. 
 - You don't need to install anything, appimages have everything and the kitchen sink bundled in.
 

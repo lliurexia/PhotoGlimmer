@@ -631,6 +631,9 @@ background-color: rgb(85, 87, 83)</string>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
+            <property name="toolTip">
+             <string>Background - applies effects to background</string>
+            </property>
             <property name="text">
              <string>BG</string>
             </property>
@@ -678,6 +681,9 @@ background-color: rgb(85, 87, 83)</string>
           </item>
           <item>
            <widget class="QLabel" name="label_back">
+            <property name="toolTip">
+             <string>Foreground - applies effects to foreground</string>
+            </property>
             <property name="text">
              <string>FG</string>
             </property>

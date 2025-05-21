@@ -1,0 +1,99 @@
+{
+  "app": {
+    "title": "PhotoGlimmer: ¡Ilumíname!",
+    "open_image": "Abrir una imagen para editar",
+    "save_prompt": "Presiona 'Guardar' cuando hayas terminado de editar tu imagen"
+  },
+  "buttons": {
+    "browse": "Explorar",
+    "save": "Guardar",
+    "reset": "Reset",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "checkboxes": {
+    "pp": "PP",
+    "denoise": "Eliminar ruido"
+  },
+  "tooltips": {
+    "browse": "Abrir un archivo de imagen para editar",
+    "pp": "Procesar toda la imagen",
+    "denoise": "Eliminar ruido del área seleccionada",
+    "weightage": "Peso para la imagen original",
+    "threshold": "Ajustar umbral de detección",
+    "saturation": "Ajustar saturación",
+    "brightness": "Ajustar brillo",
+    "blur_edge": "Ajustar desenfoque de bordes",
+    "blend_weight": "Ajustar peso de la mezcla",
+    "bg_blur": "Ajustar desenfoque del fondo",
+    "bg": "Fondo - aplica efectos al fondo",
+    "fg": "Primer plano - aplica efectos al primer plano",
+    "segmenter": "Selecciona primer plano o fondo para aplicar efectos",
+    "main_image": "No has abierto ninguna imagen. Usa el botón Abrir archivo en la parte superior izquierda.",
+    "save_button": "Guardar archivo editado. Puede tardar más tiempo que las previsualizaciones."
+  },
+  "menu": {
+    "file": "Archivo",
+    "open": "Abrir",
+    "save": "Guardar",
+    "quit": "Salir",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "tools": "Herramientas",
+    "locate_on_disk": "Localizar en disco",
+    "fg_to_clipboard": "FG al portapapeles",
+    "language": "Idioma"
+  },
+  "dialogs": {
+    "open_image": "Abrir una imagen",
+    "open_containing_folder": "Abrir carpeta contenedora",
+    "save_transparent_png": "Guardar imagen PNG transparente solo con primer plano",
+    "confirm": "Confirmar",
+    "really": "¿Realmente?",
+    "save_image": "Guardar imagen",
+    "image_files": "Archivos de imagen",
+    "error": "Error",
+    "invalid_file": "Archivo inválido",
+    "not_an_image": "¿No es una imagen?",
+    "quit": "¿Salir?",
+    "confirm_quit": "¿Estás seguro de que quieres salir?",
+    "preview": "Vista previa",
+    "open_image_dialog": "PhotoGlimmer: Abrir una imagen",
+    "look_in": "Buscar en",
+    "file_name": "Nombre de archivo",
+    "files_of_type": "Archivos de tipo",
+    "open_button": "Abrir",
+    "cancel_button": "Cancelar"
+  },
+  "messages": {
+    "message_about": "Mensaje sobre",
+    "some_message_shown": "Algún mensaje mostrado",
+    "no_mask": "Sin máscara",
+    "edit_first": "Edita algo primero",
+    "edit_and_try": "Edita la imagen un poco e inténtalo de nuevo",
+    "nothing_edited": "¡Nada editado todavía!",
+    "unedited": "Sin editar",
+    "nothing_to_save": "¡Nada que guardar!",
+    "error_saving": "Error al guardar el archivo",
+    "file_saved": "Archivo guardado",
+    "saved_file": "Guardado {}",
+    "fg_copied": "Primer plano copiado al portapapeles",
+    "paste_to_editor": "Pégalo en tu editor de imágenes favorito",
+    "no_image_opened": "¡No has abierto ninguna imagen!"
+  },
+  "labels": {
+    "threshold": "Umbral",
+    "saturation": "Saturación",
+    "brightness": "Brillo",
+    "blur_edge": "Desenfoque de bordes",
+    "blend_weight": "Peso de mezcla",
+    "bg_blur": "Desenfoque de fondo",
+    "segmentation_mode": "Modo de segmentación"
+  },
+  "status": {
+    "processing": "Procesando imagen...",
+    "ready": "Listo",
+    "drag_drop": "Arrastra y suelta una imagen aquí",
+    "saved": "Imagen guardada en: {0}"
+  }
+}

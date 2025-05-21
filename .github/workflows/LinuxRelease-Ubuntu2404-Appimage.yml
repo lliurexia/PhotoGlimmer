@@ -1,0 +1,113 @@
+name: LinuxRelease-Ubuntu2404-Appimage
+
+on:
+  workflow_dispatch:
+    inputs:
+      reltag:
+        description: "Tag for release, e.g. v1.0.0"
+        required: true
+        default: "latest"
+
+permissions:
+  contents: write
+  pull-requests: write
+  repository-projects: write
+
+jobs:
+  build-appimage:
+    runs-on: ubuntu-24.04
+    env:
+      TAGNAME: ${{ inputs.reltag }}
+
+    steps:
+    # ------------------------------------------------------------
+    # 1  Source checkout
+    # ------------------------------------------------------------
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # ------------------------------------------------------------
+    # 2  System packages (while python3 is still 3.12)
+    # ------------------------------------------------------------
+    - name: Install build dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          build-essential git pkg-config \
+          libgirepository1.0-dev libcairo2-dev \
+          gir1.2-webkit-6.0 libcanberra-gtk3-module \
+          libgl1
+
+    # ------------------------------------------------------------
+    # 3  GitHub Python 3.10
+    # ------------------------------------------------------------
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+        check-latest: true
+
+    # ------------------------------------------------------------
+    # 4  Make 3.10 the `python3` that Briefcase expects
+    # ------------------------------------------------------------
+    - name: Re-point system python3 and expose dev files
+      run: |
+        # Interpreter
+        PY=$(which python)
+        sudo ln -sf "$PY" /usr/bin/python3
+        sudo ln -sf "$PY" /usr/bin/python3.10
+
+        # python3.10-config
+        PYCONFIG=$(python -c "import sysconfig, pathlib; print(pathlib.Path(sysconfig.get_config_var('BINDIR'))/'python3-config')")
+        sudo ln -sf "$PYCONFIG" /usr/bin/python3.10-config
+
+        # C headers
+        INC=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")
+        sudo rm -rf /usr/include/python3.10
+        sudo ln -sf "$INC" /usr/include/python3.10
+
+        # Shared library
+        LIBDIR=$(python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
+        LDLIB=$(python -c "import sysconfig; print(sysconfig.get_config_var('LDLIBRARY'))")
+        sudo ln -sf "$LIBDIR/$LDLIB" /usr/lib/libpython3.10.so
+
+        # Briefcase
+        python -m pip install --upgrade pip
+        python -m pip install briefcase
+
+    # ------------------------------------------------------------
+    # 5  Build once
+    # ------------------------------------------------------------
+    - name: briefcase build
+      run: briefcase build
+
+    # ------------------------------------------------------------
+    # 6  Package AppImage (optional)
+    # ------------------------------------------------------------
+    - name: Package AppImage
+      run: briefcase package linux appimage
+
+
+
+    # ------------------------------------------------------------
+    # 8  Upload artifacts to workflow run
+    # ------------------------------------------------------------
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: photoglimmer-ubuntu2404-appimage
+        path: |
+          ./dist/*.AppImage
+
+    # ------------------------------------------------------------
+    # 9  Attach artifacts to a GitHub Release
+    # ------------------------------------------------------------
+    - name: Create GitHub release
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ inputs.reltag }}_appimage"
+        prerelease: false
+        title: "Build ${{ github.event.inputs.reltag }} (AppImage)"
+        files: |
+          ./dist/*.AppImage

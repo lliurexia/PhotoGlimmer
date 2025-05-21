@@ -26,6 +26,15 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# PhotoGlimmer specific
+# photoglimmer_*.deb
+photoglimmer_*/usr/lib/python3/dist-packages/photoglimmer/
+*.bak
+*.tmp
+*.py.bak
+fix_*.sh
+debug_*.py
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
